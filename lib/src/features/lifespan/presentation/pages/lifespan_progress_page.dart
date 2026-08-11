@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:life_battery/src/common_widgets/async_value_widget.dart';
 import 'package:life_battery/src/extensions/extensions.dart';
+import 'package:life_battery/src/features/ads/presentation/widgets/banner_ad_widget.dart';
 import 'package:life_battery/src/features/lifespan/domain/lifespan_range.dart';
 import 'package:life_battery/src/features/lifespan/presentation/providers/display_mode_manager_provider.dart';
 import 'package:life_battery/src/features/lifespan/presentation/providers/has_long_pressed_battery_provider.dart';
@@ -27,6 +28,9 @@ class LifespanProgressPage extends ConsumerWidget {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
+      // Keep the battery centered on the full screen even when the banner
+      // ad is visible
+      extendBody: true,
       appBar: AppBar(
         actions: [
           IconButton(
@@ -35,6 +39,7 @@ class LifespanProgressPage extends ConsumerWidget {
           ),
         ],
       ),
+      bottomNavigationBar: const BannerAdWidget(),
       body: AsyncValueWidget(
         asyncValue: lifespanProgressState,
         data: (state) => Center(
