@@ -8,7 +8,7 @@ class LocalDatabase {
   static final _instance = LocalDatabase._internal();
 
   static const _databaseName = 'app_database.db';
-  static const _databaseVersion = 7;
+  static const _databaseVersion = 8;
 
   static const _tableName = 'lifespan';
   static const _columnId = 'id';
@@ -19,6 +19,7 @@ class LocalDatabase {
   static const _columnIsDeletedUser = 'isDeletedUser';
   static const _columnHasLongPressedBattery = 'hasLongPressedBattery';
   static const _columnIsPercentageMode = 'isPercentageMode';
+  static const _columnHasRemovedAds = 'hasRemovedAds';
 
   Database? _database;
 
@@ -50,7 +51,8 @@ class LocalDatabase {
             $_columnIsInitialUser INTEGER NOT NULL,
             $_columnIsDeletedUser INTEGER NOT NULL,
             $_columnHasLongPressedBattery INTEGER NOT NULL,
-            $_columnIsPercentageMode INTEGER NOT NULL
+            $_columnIsPercentageMode INTEGER NOT NULL,
+            $_columnHasRemovedAds INTEGER NOT NULL
           )
         ''');
 
@@ -64,6 +66,7 @@ class LocalDatabase {
               _columnIsDeletedUser: 0,
               _columnHasLongPressedBattery: 0,
               _columnIsPercentageMode: 1,
+              _columnHasRemovedAds: 0,
             },
           );
         },
@@ -96,6 +99,13 @@ class LocalDatabase {
               'ALTER TABLE $_tableName '
               'ADD COLUMN $_columnIsPercentageMode INTEGER NOT NULL '
               'DEFAULT 1',
+            );
+          }
+          if (oldVersion < 8) {
+            await db.execute(
+              'ALTER TABLE $_tableName '
+              'ADD COLUMN $_columnHasRemovedAds INTEGER NOT NULL '
+              'DEFAULT 0',
             );
           }
         },
