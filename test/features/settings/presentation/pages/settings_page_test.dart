@@ -170,6 +170,24 @@ void main() {
     });
   });
 
+  group('Remove ads', () {
+    testWidgets('Displays remove ads label', (tester) async {
+      tester.platformDispatcher.localesTestValue = [const Locale('en')];
+      await tester.pumpWidget(const TestSettingsPage());
+      await tester.pumpAndSettle();
+
+      expect(find.text('Remove ads'), findsOneWidget);
+    });
+
+    testWidgets('Displays Japanese remove ads label', (tester) async {
+      tester.platformDispatcher.localesTestValue = [const Locale('ja')];
+      await tester.pumpWidget(const TestSettingsPage());
+      await tester.pumpAndSettle();
+
+      expect(find.text('広告を削除'), findsOneWidget);
+    });
+  });
+
   group('Localization tests', () {
     testWidgets('Device locale is English when set to English', (tester) async {
       tester.platformDispatcher.localesTestValue = [const Locale('en')];

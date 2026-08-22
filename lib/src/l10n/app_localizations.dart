@@ -230,6 +230,12 @@ abstract class AppLocalizations {
   /// **'Long press to edit your life'**
   String get longPressToEditHint;
 
+  /// No description provided for @removeAdsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove ads'**
+  String get removeAdsLabel;
+
   /// No description provided for @todaysMessageHint.
   ///
   /// In en, this message translates to:

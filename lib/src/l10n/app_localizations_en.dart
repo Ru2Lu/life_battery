@@ -81,6 +81,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get longPressToEditHint => 'Long press to edit your life';
 
   @override
+  String get removeAdsLabel => 'Remove ads';
+
+  @override
   String get todaysMessageHint =>
       'This moment is the youngest you\'ll ever be.';
 }

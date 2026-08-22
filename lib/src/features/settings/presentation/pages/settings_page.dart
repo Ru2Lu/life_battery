@@ -1,5 +1,6 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
+import 'package:life_battery/src/features/purchases/presentation/widgets/remove_ads_list_tile.dart';
 import 'package:life_battery/src/features/settings/presentation/widgets/appearance_list_tile.dart';
 import 'package:life_battery/src/features/settings/presentation/widgets/delete_all_list_tile.dart';
 import 'package:life_battery/src/features/settings/presentation/widgets/notification_settings_list_tile.dart';
@@ -16,6 +17,7 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(),
       body: ListView(
         children: <Widget>[
+          const RemoveAdsListTile(),
           const ReviewAppListTile(),
           const PrivacyPolicyListTile(
             canLaunchUrl: canLaunchUrl,
