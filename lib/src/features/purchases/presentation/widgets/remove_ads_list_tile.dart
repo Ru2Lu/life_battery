@@ -37,7 +37,12 @@ class RemoveAdsListTile extends ConsumerWidget {
                 ),
             ],
           ),
-          trailing: adFree ? const Icon(Icons.check) : null,
+          trailing: adFree
+              ? Icon(
+                  Icons.check,
+                  color: Theme.of(context).colorScheme.primary,
+                )
+              : null,
         );
       },
     );
