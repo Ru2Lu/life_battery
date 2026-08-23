@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -20,6 +20,7 @@
 		B5A9A4D52F40334E00F4C082 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A9A4D42F40334E00F4C082 /* SwiftUI.framework */; };
 		B5A9A4E02F40335000F4C082 /* LifeBatteryWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B5A9A4D12F40334E00F4C082 /* LifeBatteryWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B5AA52F02EF2FCBB004484CD /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = B5AA52EF2EF2FCBB004484CD /* AppIcon.icon */; };
+		B5B45D72303ABA5E00160CA2 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B45D71303ABA5E00160CA2 /* StoreKit.framework */; };
 		BE244E5019DA32EC98AF9FC2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EC36663C6075842BAE851D23 /* GoogleService-Info.plist */; };
 		E01E7BDD05A39AF755E174FD /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CB2BA25316FA5B1CFA450AB /* Pods_RunnerTests.framework */; };
 /* End PBXBuildFile section */
@@ -94,6 +95,7 @@
 		B5A9A4D42F40334E00F4C082 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		B5A9A59F2F4096D400F4C082 /* LifeBatteryWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LifeBatteryWidgetExtension.entitlements; sourceTree = "<group>"; };
 		B5AA52EF2EF2FCBB004484CD /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
+		B5B45D71303ABA5E00160CA2 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		C37EC1072728A593701DA940 /* Pods-RunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CFB375B06250D48770C3C430 /* Pods-RunnerTests.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.profile.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.profile.xcconfig"; sourceTree = "<group>"; };
 		E2769C82A2EB3BD3A25480E8 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
@@ -102,7 +104,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		B5A9A4E52F40335000F4C082 /* Exceptions for "LifeBatteryWidget" folder in "LifeBatteryWidgetExtension" target */ = {
+		B5A9A4E52F40335000F4C082 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -112,18 +114,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		B5A9A4D62F40334E00F4C082 /* LifeBatteryWidget */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				B5A9A4E52F40335000F4C082 /* Exceptions for "LifeBatteryWidget" folder in "LifeBatteryWidgetExtension" target */,
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = LifeBatteryWidget;
-			sourceTree = "<group>";
-		};
+		B5A9A4D62F40334E00F4C082 /* LifeBatteryWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (B5A9A4E52F40335000F4C082 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = LifeBatteryWidget; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +131,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				082893D4C22D25FF477E6EDD /* Pods_Runner.framework in Frameworks */,
+				B5B45D72303ABA5E00160CA2 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,6 +158,7 @@
 		8FD7036B437B1C9CA312338E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B5B45D71303ABA5E00160CA2 /* StoreKit.framework */,
 				FBD36A28A113900FD348694E /* Pods_Runner.framework */,
 				5CB2BA25316FA5B1CFA450AB /* Pods_RunnerTests.framework */,
 				B5A9A4D22F40334E00F4C082 /* WidgetKit.framework */,
@@ -394,9 +387,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -427,9 +424,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
