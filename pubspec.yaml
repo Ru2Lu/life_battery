@@ -28,7 +28,7 @@ dependencies:
   google_mobile_ads: ^9.0.0
   home_widget: ^0.9.3
   hooks_riverpod: ^3.0.3
-  in_app_purchase: ^3.2.3
+  in_app_purchase: ^3.3.0
   in_app_review: ^2.0.11
   intl: ^0.20.2
   json_annotation: ^4.9.0
