@@ -33,13 +33,14 @@ void main() {
     fakeEntitlements = FakeEntitlementsLocalDataSource();
   });
 
-  testWidgets('Displays label and price when not entitled', (tester) async {
+  testWidgets('Displays label without the purchased state when not entitled', (
+    tester,
+  ) async {
     tester.platformDispatcher.localesTestValue = [const Locale('en')];
     await tester.pumpWidget(buildTile());
     await tester.pumpAndSettle();
 
     expect(find.text('Remove ads'), findsOneWidget);
-    expect(find.text(r'$1.00'), findsOneWidget);
     expect(find.text('Purchased'), findsNothing);
     expect(find.byIcon(Icons.check), findsNothing);
   });
@@ -75,7 +76,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Remove ads'), findsOneWidget);
-    expect(find.text(r'$1.00'), findsNothing);
     expect(find.text('The store is currently unavailable.'), findsOneWidget);
   });
 

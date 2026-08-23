@@ -51,9 +51,6 @@ class RemoveAdsListTile extends ConsumerWidget {
         return switch (product) {
           AsyncValue(value: final ProductDetails productDetails) =>
             _RemoveAdsTile(
-              // The price string comes from the store already formatted for
-              // the user's locale and currency.
-              trailingText: productDetails.price,
               onTap: () async {
                 final messenger = ScaffoldMessenger.of(context);
                 final isRequested = await ref
