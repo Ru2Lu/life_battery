@@ -1,10 +1,10 @@
 [
   {
     "language": "en-US",
-    "text": "・Added a banner ad to the bottom of the main screen."
+    "text": "・Added a Remove Ads purchase to the settings screen.\n・Added a Restore Purchases option to the settings screen."
   },
   {
     "language": "ja",
-    "text": "・メイン画面の下部にバナー広告を表示するようになりました。"
+    "text": "・設定画面から広告を削除できるようになりました。\n・設定画面に以前の購入を復元する項目を追加しました。"
   }
 ]
