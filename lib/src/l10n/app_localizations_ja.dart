@@ -82,5 +82,8 @@ class AppLocalizationsJa extends AppLocalizations {
   String get removeAdsLabel => '広告を削除';
 
   @override
+  String get removeAdsPurchasedLabel => '購入済み';
+
+  @override
   String get todaysMessageHint => 'この瞬間が、一番若い自分';
 }

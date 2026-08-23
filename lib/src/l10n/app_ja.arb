@@ -29,5 +29,6 @@
   "notificationBodyZeroPercent": "あなたの物語は、誰かの物語の中で生き続けます。ありがとうございました。",
   "longPressToEditHint": "長押しで人生を編集",
   "removeAdsLabel": "広告を削除",
+  "removeAdsPurchasedLabel": "購入済み",
   "todaysMessageHint": "この瞬間が、一番若い自分"
 }

@@ -236,6 +236,12 @@ abstract class AppLocalizations {
   /// **'Remove ads'**
   String get removeAdsLabel;
 
+  /// No description provided for @removeAdsPurchasedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchased'**
+  String get removeAdsPurchasedLabel;
+
   /// No description provided for @todaysMessageHint.
   ///
   /// In en, this message translates to:
