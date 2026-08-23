@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -14,7 +15,10 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Activates the app-wide purchase stream listener at startup.
-    ref.watch(purchaseUpdatesProvider);
+    // Purchases are sold on the App Store only.
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      ref.watch(purchaseUpdatesProvider);
+    }
 
     final goRouter = ref.watch(goRouterProvider);
     final themeMode = ref.watch(appThemeModeProvider).value ?? ThemeMode.system;
