@@ -85,5 +85,8 @@ class AppLocalizationsJa extends AppLocalizations {
   String get removeAdsPurchasedLabel => '購入済み';
 
   @override
+  String get storeUnavailableContent => '現在ストアを利用できません。';
+
+  @override
   String get todaysMessageHint => 'この瞬間が、一番若い自分';
 }

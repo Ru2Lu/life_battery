@@ -2,17 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:life_battery/src/features/purchases/data/entitlements_repository_provider.dart';
+import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/presentation/widgets/remove_ads_list_tile.dart';
 
 import '../../../../../test_helpers/fake_entitlements.dart';
+import '../../../../../test_helpers/fake_purchases.dart';
 import '../../../../../test_helpers/test_app.dart';
 
 void main() {
+  late FakePurchasesApiDataSource fakeApi;
   late FakeEntitlementsLocalDataSource fakeEntitlements;
 
   Widget buildTile() {
     return ProviderScope(
       overrides: [
+        purchasesApiDataSourceProvider.overrideWithValue(fakeApi),
         entitlementsLocalDataSourceProvider.overrideWithValue(
           fakeEntitlements,
         ),
@@ -24,6 +28,7 @@ void main() {
   }
 
   setUp(() {
+    fakeApi = FakePurchasesApiDataSource();
     fakeEntitlements = FakeEntitlementsLocalDataSource();
   });
 
@@ -60,5 +65,48 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('購入済み'), findsOneWidget);
+  });
+
+  testWidgets('Shows a notice when the store is unavailable', (tester) async {
+    fakeApi.available = false;
+
+    tester.platformDispatcher.localesTestValue = [const Locale('en')];
+    await tester.pumpWidget(buildTile());
+    await tester.pumpAndSettle();
+
+    expect(find.text('Remove ads'), findsOneWidget);
+    expect(find.text('The store is currently unavailable.'), findsOneWidget);
+  });
+
+  testWidgets('Shows a Japanese notice when the store is unavailable', (
+    tester,
+  ) async {
+    fakeApi.available = false;
+
+    tester.platformDispatcher.localesTestValue = [const Locale('ja')];
+    await tester.pumpWidget(buildTile());
+    await tester.pumpAndSettle();
+
+    expect(find.text('現在ストアを利用できません。'), findsOneWidget);
+  });
+
+  testWidgets('Hides the notice when the store is available', (tester) async {
+    tester.platformDispatcher.localesTestValue = [const Locale('en')];
+    await tester.pumpWidget(buildTile());
+    await tester.pumpAndSettle();
+
+    expect(find.text('The store is currently unavailable.'), findsNothing);
+  });
+
+  testWidgets('Hides the notice for the purchased state', (tester) async {
+    fakeApi.available = false;
+    fakeEntitlements.hasRemovedAds = true;
+
+    tester.platformDispatcher.localesTestValue = [const Locale('en')];
+    await tester.pumpWidget(buildTile());
+    await tester.pumpAndSettle();
+
+    expect(find.text('Purchased'), findsOneWidget);
+    expect(find.text('The store is currently unavailable.'), findsNothing);
   });
 }

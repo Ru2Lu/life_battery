@@ -30,5 +30,6 @@
   "longPressToEditHint": "長押しで人生を編集",
   "removeAdsLabel": "広告を削除",
   "removeAdsPurchasedLabel": "購入済み",
+  "storeUnavailableContent": "現在ストアを利用できません。",
   "todaysMessageHint": "この瞬間が、一番若い自分"
 }

@@ -242,6 +242,12 @@ abstract class AppLocalizations {
   /// **'Purchased'**
   String get removeAdsPurchasedLabel;
 
+  /// No description provided for @storeUnavailableContent.
+  ///
+  /// In en, this message translates to:
+  /// **'The store is currently unavailable.'**
+  String get storeUnavailableContent;
+
   /// No description provided for @todaysMessageHint.
   ///
   /// In en, this message translates to:

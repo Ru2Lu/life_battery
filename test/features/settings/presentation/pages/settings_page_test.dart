@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hooks_riverpod/misc.dart';
 import 'package:life_battery/src/features/purchases/data/entitlements_repository_provider.dart';
+import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
 import 'package:life_battery/src/features/settings/presentation/pages/settings_page.dart';
 import 'package:life_battery/src/features/settings/presentation/providers/app_theme_mode_provider.dart';
 import 'package:life_battery/src/features/settings/presentation/widgets/notification_settings_list_tile.dart';
@@ -10,12 +11,16 @@ import 'package:life_battery/src/features/settings/presentation/widgets/privacy_
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../test_helpers/fake_entitlements.dart';
+import '../../../../../test_helpers/fake_purchases.dart';
 import '../../../../../test_helpers/test_app.dart';
 
-/// Keeps the purchases tiles on the settings page away from the real
-/// database in widget tests.
+/// Keeps the purchases tiles on the settings page away from the real store
+/// and database in widget tests.
 List<Override> purchasesOverrides() {
   return [
+    purchasesApiDataSourceProvider.overrideWithValue(
+      FakePurchasesApiDataSource(),
+    ),
     entitlementsLocalDataSourceProvider.overrideWithValue(
       FakeEntitlementsLocalDataSource(),
     ),

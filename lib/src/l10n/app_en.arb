@@ -30,5 +30,6 @@
   "longPressToEditHint": "Long press to edit your life",
   "removeAdsLabel": "Remove ads",
   "removeAdsPurchasedLabel": "Purchased",
+  "storeUnavailableContent": "The store is currently unavailable.",
   "todaysMessageHint": "This moment is the youngest you'll ever be."
 }

@@ -87,6 +87,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get removeAdsPurchasedLabel => 'Purchased';
 
   @override
+  String get storeUnavailableContent => 'The store is currently unavailable.';
+
+  @override
   String get todaysMessageHint =>
       'This moment is the youngest you\'ll ever be.';
 }
