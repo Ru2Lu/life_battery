@@ -7,4 +7,9 @@ class FakeEntitlementsLocalDataSource implements EntitlementsLocalDataSource {
 
   @override
   Future<bool> getHasRemovedAds() async => hasRemovedAds;
+
+  @override
+  Future<void> markHasRemovedAds() async {
+    hasRemovedAds = true;
+  }
 }

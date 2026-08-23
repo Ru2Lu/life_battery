@@ -21,4 +21,8 @@ class PurchasesRepository {
     return _apiDataSource.fetchRemoveAdsProduct();
   }
 
+  /// Finishes a store transaction; required for every finished purchase.
+  Future<void> completePurchase(PurchaseDetails purchase) {
+    return _apiDataSource.completePurchase(purchase);
+  }
 }

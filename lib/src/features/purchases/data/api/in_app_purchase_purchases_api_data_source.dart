@@ -25,4 +25,8 @@ class InAppPurchasePurchasesApiDataSource implements PurchasesApiDataSource {
     return null;
   }
 
+  @override
+  Future<void> completePurchase(PurchaseDetails purchase) {
+    return _inAppPurchase.completePurchase(purchase);
+  }
 }

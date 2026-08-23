@@ -1,7 +1,9 @@
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:life_battery/src/features/purchases/data/api/product_ids.dart';
+import 'package:life_battery/src/features/purchases/data/entitlements_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/domain/remove_ads_purchase_status.dart';
+import 'package:life_battery/src/features/purchases/presentation/providers/is_ad_free_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'purchase_updates_provider.g.dart';
@@ -21,17 +23,20 @@ class PurchaseUpdates extends _$PurchaseUpdates {
     return RemoveAdsPurchaseStatus.none;
   }
 
-  void _onPurchaseUpdates(List<PurchaseDetails> purchases) {
-    purchases.forEach(_handlePurchase);
+  Future<void> _onPurchaseUpdates(List<PurchaseDetails> purchases) async {
+    for (final purchase in purchases) {
+      await _handlePurchase(purchase);
+    }
   }
 
-  // Only reflects the store events as status for now. Granting the
-  // entitlement and completing the transactions are added with the
-  // purchase flow.
-  void _handlePurchase(PurchaseDetails purchase) {
+  Future<void> _handlePurchase(PurchaseDetails purchase) async {
     switch (purchase.status) {
       case PurchaseStatus.purchased || PurchaseStatus.restored:
         if (purchase.productID == ProductIds.removeAds) {
+          await ref
+              .read(entitlementsRepositoryProvider)
+              .markRemoveAdsPurchased();
+          ref.invalidate(isAdFreeProvider);
           state = purchase.status == PurchaseStatus.purchased
               ? RemoveAdsPurchaseStatus.purchased
               : RemoveAdsPurchaseStatus.restored;
@@ -42,6 +47,12 @@ class PurchaseUpdates extends _$PurchaseUpdates {
         state = RemoveAdsPurchaseStatus.error;
       case PurchaseStatus.canceled:
         state = RemoveAdsPurchaseStatus.canceled;
+    }
+
+    // Required for every finished transaction regardless of status to
+    // avoid transactions getting stuck in the store queue.
+    if (purchase.pendingCompletePurchase) {
+      await ref.read(purchasesRepositoryProvider).completePurchase(purchase);
     }
   }
 }

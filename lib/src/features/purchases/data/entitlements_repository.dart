@@ -11,4 +11,8 @@ class EntitlementsRepository {
   Future<bool> isAdFree() {
     return _localDataSource.getHasRemovedAds();
   }
+
+  Future<void> markRemoveAdsPurchased() {
+    return _localDataSource.markHasRemovedAds();
+  }
 }

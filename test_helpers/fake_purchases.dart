@@ -24,6 +24,8 @@ class FakePurchasesApiDataSource implements PurchasesApiDataSource {
   bool available;
   ProductDetails? product;
 
+  final completedPurchases = <PurchaseDetails>[];
+
   @override
   Stream<List<PurchaseDetails>> get purchaseStream => controller.stream;
 
@@ -33,6 +35,10 @@ class FakePurchasesApiDataSource implements PurchasesApiDataSource {
   @override
   Future<ProductDetails?> fetchRemoveAdsProduct() async => product;
 
+  @override
+  Future<void> completePurchase(PurchaseDetails purchase) async {
+    completedPurchases.add(purchase);
+  }
 }
 
 PurchaseDetails buildPurchaseDetails({

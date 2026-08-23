@@ -33,4 +33,14 @@ class CacheEntitlementsLocalDataSource implements EntitlementsLocalDataSource {
     }
   }
 
+  @override
+  Future<void> markHasRemovedAds() async {
+    try {
+      final db = await _localDatabase.database;
+      final response = await db.query(_tableName);
+      if (response.isNotEmpty) {
+        await db.update(_tableName, {_columnHasRemovedAds: 1});
+      }
+    } on DatabaseException catch (_) {}
+  }
 }
