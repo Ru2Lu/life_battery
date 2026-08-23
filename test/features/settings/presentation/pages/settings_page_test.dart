@@ -191,12 +191,13 @@ void main() {
   });
 
   group('Remove ads', () {
-    testWidgets('Displays remove ads label', (tester) async {
+    testWidgets('Displays remove ads label and price', (tester) async {
       tester.platformDispatcher.localesTestValue = [const Locale('en')];
       await tester.pumpWidget(const TestSettingsPage());
       await tester.pumpAndSettle();
 
       expect(find.text('Remove ads'), findsOneWidget);
+      expect(find.text(r'$1.00'), findsOneWidget);
     });
 
     testWidgets('Displays Japanese remove ads label', (tester) async {
