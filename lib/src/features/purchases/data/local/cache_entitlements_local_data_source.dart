@@ -10,23 +10,23 @@ class CacheEntitlementsLocalDataSource implements EntitlementsLocalDataSource {
   final LocalDatabase _localDatabase;
 
   static const _tableName = 'lifespan';
-  static const _columnHasRemovedAds = 'hasRemovedAds';
+  static const _columnHasPremium = 'hasPremium';
 
   @override
-  Future<bool> getHasRemovedAds() async {
+  Future<bool> getIsPremium() async {
     try {
       final db = await _localDatabase.database;
       final result = await db.query(
         _tableName,
-        columns: [_columnHasRemovedAds],
+        columns: [_columnHasPremium],
       );
 
       if (result.isEmpty) {
         return false;
       } else {
-        // Falls back to showing ads on failure so that a database error can
-        // never grant the entitlement by accident.
-        return result.first[_columnHasRemovedAds] == 1;
+        // Falls back to the locked state on failure so that a database error
+        // can never grant the entitlement by accident.
+        return result.first[_columnHasPremium] == 1;
       }
     } on DatabaseException catch (_) {
       return false;
@@ -34,12 +34,12 @@ class CacheEntitlementsLocalDataSource implements EntitlementsLocalDataSource {
   }
 
   @override
-  Future<void> markHasRemovedAds() async {
+  Future<void> markIsPremium() async {
     try {
       final db = await _localDatabase.database;
       final response = await db.query(_tableName);
       if (response.isNotEmpty) {
-        await db.update(_tableName, {_columnHasRemovedAds: 1});
+        await db.update(_tableName, {_columnHasPremium: 1});
       }
     } on DatabaseException catch (_) {}
   }

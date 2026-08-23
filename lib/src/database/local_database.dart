@@ -8,7 +8,7 @@ class LocalDatabase {
   static final _instance = LocalDatabase._internal();
 
   static const _databaseName = 'app_database.db';
-  static const _databaseVersion = 8;
+  static const _databaseVersion = 9;
 
   static const _tableName = 'lifespan';
   static const _columnId = 'id';
@@ -19,7 +19,10 @@ class LocalDatabase {
   static const _columnIsDeletedUser = 'isDeletedUser';
   static const _columnHasLongPressedBattery = 'hasLongPressedBattery';
   static const _columnIsPercentageMode = 'isPercentageMode';
+  // Unused since v9; kept in upgraded databases. hasPremium replaced it
+  // when the purchase was widened from ad removal to the premium unlock.
   static const _columnHasRemovedAds = 'hasRemovedAds';
+  static const _columnHasPremium = 'hasPremium';
 
   Database? _database;
 
@@ -52,7 +55,8 @@ class LocalDatabase {
             $_columnIsDeletedUser INTEGER NOT NULL,
             $_columnHasLongPressedBattery INTEGER NOT NULL,
             $_columnIsPercentageMode INTEGER NOT NULL,
-            $_columnHasRemovedAds INTEGER NOT NULL
+            $_columnHasRemovedAds INTEGER NOT NULL,
+            $_columnHasPremium INTEGER NOT NULL
           )
         ''');
 
@@ -67,6 +71,7 @@ class LocalDatabase {
               _columnHasLongPressedBattery: 0,
               _columnIsPercentageMode: 1,
               _columnHasRemovedAds: 0,
+              _columnHasPremium: 0,
             },
           );
         },
@@ -105,6 +110,13 @@ class LocalDatabase {
             await db.execute(
               'ALTER TABLE $_tableName '
               'ADD COLUMN $_columnHasRemovedAds INTEGER NOT NULL '
+              'DEFAULT 0',
+            );
+          }
+          if (oldVersion < 9) {
+            await db.execute(
+              'ALTER TABLE $_tableName '
+              'ADD COLUMN $_columnHasPremium INTEGER NOT NULL '
               'DEFAULT 0',
             );
           }

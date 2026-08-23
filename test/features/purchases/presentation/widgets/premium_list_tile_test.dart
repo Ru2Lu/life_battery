@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:life_battery/src/features/purchases/data/entitlements_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
-import 'package:life_battery/src/features/purchases/presentation/widgets/remove_ads_list_tile.dart';
+import 'package:life_battery/src/features/purchases/presentation/widgets/premium_list_tile.dart';
 
 import '../../../../../test_helpers/fake_entitlements.dart';
 import '../../../../../test_helpers/fake_purchases.dart';
@@ -23,7 +23,7 @@ void main() {
         ),
       ],
       child: const TestApp(
-        home: Scaffold(body: RemoveAdsListTile()),
+        home: Scaffold(body: PremiumListTile()),
       ),
     );
   }
@@ -40,13 +40,26 @@ void main() {
     await tester.pumpWidget(buildTile());
     await tester.pumpAndSettle();
 
-    expect(find.text('Remove ads'), findsOneWidget);
+    expect(find.text('Premium'), findsOneWidget);
     expect(find.text('Purchased'), findsNothing);
     expect(find.byIcon(Icons.check), findsNothing);
   });
 
+  testWidgets('Describes the premium features when not entitled', (
+    tester,
+  ) async {
+    tester.platformDispatcher.localesTestValue = [const Locale('en')];
+    await tester.pumpWidget(buildTile());
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Removes ads and unlocks the home screen widget.'),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('Displays purchased state when entitled', (tester) async {
-    fakeEntitlements.hasRemovedAds = true;
+    fakeEntitlements.isPremium = true;
 
     tester.platformDispatcher.localesTestValue = [const Locale('en')];
     await tester.pumpWidget(buildTile());
@@ -59,7 +72,7 @@ void main() {
   testWidgets('Displays Japanese purchased state when entitled', (
     tester,
   ) async {
-    fakeEntitlements.hasRemovedAds = true;
+    fakeEntitlements.isPremium = true;
 
     tester.platformDispatcher.localesTestValue = [const Locale('ja')];
     await tester.pumpWidget(buildTile());
@@ -75,7 +88,7 @@ void main() {
     await tester.pumpWidget(buildTile());
     await tester.pumpAndSettle();
 
-    expect(find.text('Remove ads'), findsOneWidget);
+    expect(find.text('Premium'), findsOneWidget);
     expect(find.text('The store is currently unavailable.'), findsOneWidget);
   });
 
@@ -113,7 +126,7 @@ void main() {
 
   testWidgets('Hides the notice for the purchased state', (tester) async {
     fakeApi.available = false;
-    fakeEntitlements.hasRemovedAds = true;
+    fakeEntitlements.isPremium = true;
 
     tester.platformDispatcher.localesTestValue = [const Locale('en')];
     await tester.pumpWidget(buildTile());
@@ -128,7 +141,7 @@ void main() {
     await tester.pumpWidget(buildTile());
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Remove ads'));
+    await tester.tap(find.text('Premium'));
     await tester.pumpAndSettle();
 
     expect(fakeApi.boughtProducts, [fakeApi.product]);
@@ -143,7 +156,7 @@ void main() {
     await tester.pumpWidget(buildTile());
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Remove ads'));
+    await tester.tap(find.text('Premium'));
     await tester.pump();
     await tester.pump();
 
@@ -154,13 +167,13 @@ void main() {
   });
 
   testWidgets('Ignores taps when entitled', (tester) async {
-    fakeEntitlements.hasRemovedAds = true;
+    fakeEntitlements.isPremium = true;
 
     tester.platformDispatcher.localesTestValue = [const Locale('en')];
     await tester.pumpWidget(buildTile());
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Remove ads'));
+    await tester.tap(find.text('Premium'));
     await tester.pumpAndSettle();
 
     expect(fakeApi.boughtProducts, isEmpty);
@@ -181,7 +194,10 @@ void main() {
     ]);
     await tester.pumpAndSettle();
 
-    expect(find.text('Thank you! Ads have been removed.'), findsOneWidget);
+    expect(
+      find.text('Thank you! Premium features are now unlocked.'),
+      findsOneWidget,
+    );
     expect(find.text('Purchased'), findsOneWidget);
     expect(fakeApi.completedPurchases, hasLength(1));
   });

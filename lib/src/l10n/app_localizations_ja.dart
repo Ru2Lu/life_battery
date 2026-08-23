@@ -79,16 +79,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get longPressToEditHint => '長押しで人生を編集';
 
   @override
-  String get removeAdsLabel => '広告を削除';
+  String get premiumLabel => 'プレミアム';
 
   @override
-  String get removeAdsPurchasedLabel => '購入済み';
+  String get premiumDescriptionContent => '広告を削除し、ホーム画面ウィジェットを利用できます。';
+
+  @override
+  String get premiumPurchasedLabel => '購入済み';
 
   @override
   String get storeUnavailableContent => '現在ストアを利用できません。';
 
   @override
-  String get purchaseSuccessContent => 'ご購入ありがとうございます。広告を削除しました。';
+  String get purchaseSuccessContent => 'ご購入ありがとうございます。プレミアム機能を利用できるようになりました。';
 
   @override
   String get purchasePendingContent => '購入は承認待ちです。';

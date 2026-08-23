@@ -63,7 +63,7 @@ final class BannerAdProvider
   }
 }
 
-String _$bannerAdHash() => r'67dd3149dd848a02c135ce0aa0977651bea58674';
+String _$bannerAdHash() => r'6a0dabdaa12039d065bd04d92e8958cfc6c29e2b';
 
 final class BannerAdFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<BannerAd?>, int> {

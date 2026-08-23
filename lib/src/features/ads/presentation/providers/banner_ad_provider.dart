@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:life_battery/src/features/ads/data/banner_ad_repository_provider.dart';
-import 'package:life_battery/src/features/purchases/presentation/providers/is_ad_free_provider.dart';
+import 'package:life_battery/src/features/purchases/presentation/providers/is_premium_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'banner_ad_provider.g.dart';
@@ -18,8 +18,8 @@ Future<BannerAd?> bannerAd(Ref ref, {required int width}) async {
     unawaited(loadedAd?.dispose());
   });
 
-  final isAdFree = await ref.watch(isAdFreeProvider.future);
-  if (isAdFree) return null;
+  final isPremium = await ref.watch(isPremiumProvider.future);
+  if (isPremium) return null;
 
   final repository = await ref.watch(bannerAdRepositoryProvider.future);
   final ad = await repository.loadBanner(width: width);

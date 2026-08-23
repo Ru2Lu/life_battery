@@ -81,16 +81,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get longPressToEditHint => 'Long press to edit your life';
 
   @override
-  String get removeAdsLabel => 'Remove ads';
+  String get premiumLabel => 'Premium';
 
   @override
-  String get removeAdsPurchasedLabel => 'Purchased';
+  String get premiumDescriptionContent =>
+      'Removes ads and unlocks the home screen widget.';
+
+  @override
+  String get premiumPurchasedLabel => 'Purchased';
 
   @override
   String get storeUnavailableContent => 'The store is currently unavailable.';
 
   @override
-  String get purchaseSuccessContent => 'Thank you! Ads have been removed.';
+  String get purchaseSuccessContent =>
+      'Thank you! Premium features are now unlocked.';
 
   @override
   String get purchasePendingContent => 'Your purchase is pending approval.';

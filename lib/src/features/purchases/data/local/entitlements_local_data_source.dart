@@ -1,5 +1,5 @@
 abstract interface class EntitlementsLocalDataSource {
-  Future<bool> getHasRemovedAds();
+  Future<bool> getIsPremium();
 
-  Future<void> markHasRemovedAds();
+  Future<void> markIsPremium();
 }

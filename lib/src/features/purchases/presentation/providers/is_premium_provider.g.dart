@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'is_ad_free_provider.dart';
+part of 'is_premium_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -8,58 +8,62 @@ part of 'is_ad_free_provider.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// Whether the user is entitled to an ad-free experience.
+/// Whether the user is entitled to the premium features
+/// (ad removal and the home screen widget).
 ///
 /// keepAlive because this gates ad loading app-wide and must not be
 /// disposed and re-fetched between page navigations. The source of truth
 /// is the local database; purchase events update it and invalidate this
 /// provider.
 
-@ProviderFor(IsAdFree)
-const isAdFreeProvider = IsAdFreeProvider._();
+@ProviderFor(IsPremium)
+const isPremiumProvider = IsPremiumProvider._();
 
-/// Whether the user is entitled to an ad-free experience.
+/// Whether the user is entitled to the premium features
+/// (ad removal and the home screen widget).
 ///
 /// keepAlive because this gates ad loading app-wide and must not be
 /// disposed and re-fetched between page navigations. The source of truth
 /// is the local database; purchase events update it and invalidate this
 /// provider.
-final class IsAdFreeProvider extends $AsyncNotifierProvider<IsAdFree, bool> {
-  /// Whether the user is entitled to an ad-free experience.
+final class IsPremiumProvider extends $AsyncNotifierProvider<IsPremium, bool> {
+  /// Whether the user is entitled to the premium features
+  /// (ad removal and the home screen widget).
   ///
   /// keepAlive because this gates ad loading app-wide and must not be
   /// disposed and re-fetched between page navigations. The source of truth
   /// is the local database; purchase events update it and invalidate this
   /// provider.
-  const IsAdFreeProvider._()
+  const IsPremiumProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'isAdFreeProvider',
+        name: r'isPremiumProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$isAdFreeHash();
+  String debugGetCreateSourceHash() => _$isPremiumHash();
 
   @$internal
   @override
-  IsAdFree create() => IsAdFree();
+  IsPremium create() => IsPremium();
 }
 
-String _$isAdFreeHash() => r'64036fca7949dc3afa4662cb372e6b2f246afc94';
+String _$isPremiumHash() => r'18f7ea94850024be33e58126f057a8fc3b2343a7';
 
-/// Whether the user is entitled to an ad-free experience.
+/// Whether the user is entitled to the premium features
+/// (ad removal and the home screen widget).
 ///
 /// keepAlive because this gates ad loading app-wide and must not be
 /// disposed and re-fetched between page navigations. The source of truth
 /// is the local database; purchase events update it and invalidate this
 /// provider.
 
-abstract class _$IsAdFree extends $AsyncNotifier<bool> {
+abstract class _$IsPremium extends $AsyncNotifier<bool> {
   FutureOr<bool> build();
   @$mustCallSuper
   @override

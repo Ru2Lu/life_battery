@@ -1,15 +1,15 @@
 import 'package:life_battery/src/features/purchases/data/local/entitlements_local_data_source.dart';
 
 class FakeEntitlementsLocalDataSource implements EntitlementsLocalDataSource {
-  FakeEntitlementsLocalDataSource({this.hasRemovedAds = false});
+  FakeEntitlementsLocalDataSource({this.isPremium = false});
 
-  bool hasRemovedAds;
-
-  @override
-  Future<bool> getHasRemovedAds() async => hasRemovedAds;
+  bool isPremium;
 
   @override
-  Future<void> markHasRemovedAds() async {
-    hasRemovedAds = true;
+  Future<bool> getIsPremium() async => isPremium;
+
+  @override
+  Future<void> markIsPremium() async {
+    isPremium = true;
   }
 }

@@ -1,7 +1,7 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:life_battery/src/features/purchases/presentation/widgets/remove_ads_list_tile.dart';
+import 'package:life_battery/src/features/purchases/presentation/widgets/premium_list_tile.dart';
 import 'package:life_battery/src/features/purchases/presentation/widgets/restore_purchases_list_tile.dart';
 import 'package:life_battery/src/features/settings/presentation/widgets/appearance_list_tile.dart';
 import 'package:life_battery/src/features/settings/presentation/widgets/delete_all_list_tile.dart';
@@ -21,7 +21,7 @@ class SettingsPage extends StatelessWidget {
         children: <Widget>[
           // Purchases are sold on the App Store only.
           if (defaultTargetPlatform == TargetPlatform.iOS) ...[
-            const RemoveAdsListTile(),
+            const PremiumListTile(),
             const RestorePurchasesListTile(),
           ],
           const ReviewAppListTile(),

@@ -4,8 +4,8 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:life_battery/src/features/purchases/data/api/product_ids.dart';
 import 'package:life_battery/src/features/purchases/data/entitlements_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
-import 'package:life_battery/src/features/purchases/domain/remove_ads_purchase_status.dart';
-import 'package:life_battery/src/features/purchases/presentation/providers/is_ad_free_provider.dart';
+import 'package:life_battery/src/features/purchases/domain/premium_purchase_status.dart';
+import 'package:life_battery/src/features/purchases/presentation/providers/is_premium_provider.dart';
 import 'package:life_battery/src/features/purchases/presentation/providers/purchase_updates_provider.dart';
 
 import '../../../../../test_helpers/fake_entitlements.dart';
@@ -33,7 +33,7 @@ void main() {
 
   Future<void> emit(
     PurchaseStatus status, {
-    String productID = ProductIds.removeAds,
+    String productID = ProductIds.premiumLifetime,
     bool pendingCompletePurchase = false,
   }) async {
     fakeApi.controller.add([
@@ -46,21 +46,21 @@ void main() {
     await Future<void>.delayed(Duration.zero);
   }
 
-  test('Reports purchased on a remove_ads purchase event', () async {
+  test('Reports purchased on a premium purchase event', () async {
     await emit(PurchaseStatus.purchased);
 
     expect(
       container.read(purchaseUpdatesProvider),
-      RemoveAdsPurchaseStatus.purchased,
+      PremiumPurchaseStatus.purchased,
     );
   });
 
-  test('Reports restored on a remove_ads restore event', () async {
+  test('Reports restored on a premium restore event', () async {
     await emit(PurchaseStatus.restored);
 
     expect(
       container.read(purchaseUpdatesProvider),
-      RemoveAdsPurchaseStatus.restored,
+      PremiumPurchaseStatus.restored,
     );
   });
 
@@ -69,7 +69,7 @@ void main() {
 
     expect(
       container.read(purchaseUpdatesProvider),
-      RemoveAdsPurchaseStatus.none,
+      PremiumPurchaseStatus.none,
     );
   });
 
@@ -78,7 +78,7 @@ void main() {
 
     expect(
       container.read(purchaseUpdatesProvider),
-      RemoveAdsPurchaseStatus.pending,
+      PremiumPurchaseStatus.pending,
     );
   });
 
@@ -87,7 +87,7 @@ void main() {
 
     expect(
       container.read(purchaseUpdatesProvider),
-      RemoveAdsPurchaseStatus.error,
+      PremiumPurchaseStatus.error,
     );
   });
 
@@ -96,21 +96,21 @@ void main() {
 
     expect(
       container.read(purchaseUpdatesProvider),
-      RemoveAdsPurchaseStatus.canceled,
+      PremiumPurchaseStatus.canceled,
     );
   });
 
   test('Grants the entitlement and completes a purchase', () async {
     await emit(PurchaseStatus.purchased, pendingCompletePurchase: true);
 
-    expect(fakeEntitlements.hasRemovedAds, isTrue);
+    expect(fakeEntitlements.isPremium, isTrue);
     expect(fakeApi.completedPurchases, hasLength(1));
   });
 
   test('Grants the entitlement on a restore event', () async {
     await emit(PurchaseStatus.restored, pendingCompletePurchase: true);
 
-    expect(fakeEntitlements.hasRemovedAds, isTrue);
+    expect(fakeEntitlements.isPremium, isTrue);
     expect(fakeApi.completedPurchases, hasLength(1));
   });
 
@@ -121,29 +121,29 @@ void main() {
       pendingCompletePurchase: true,
     );
 
-    expect(fakeEntitlements.hasRemovedAds, isFalse);
+    expect(fakeEntitlements.isPremium, isFalse);
     expect(fakeApi.completedPurchases, hasLength(1));
   });
 
   test('Does not grant the entitlement while pending', () async {
     await emit(PurchaseStatus.pending);
 
-    expect(fakeEntitlements.hasRemovedAds, isFalse);
+    expect(fakeEntitlements.isPremium, isFalse);
     expect(fakeApi.completedPurchases, isEmpty);
   });
 
   test('Completes a finished transaction even on error', () async {
     await emit(PurchaseStatus.error, pendingCompletePurchase: true);
 
-    expect(fakeEntitlements.hasRemovedAds, isFalse);
+    expect(fakeEntitlements.isPremium, isFalse);
     expect(fakeApi.completedPurchases, hasLength(1));
   });
 
-  test('Refreshes isAdFree after a purchase', () async {
-    expect(await container.read(isAdFreeProvider.future), isFalse);
+  test('Refreshes isPremium after a purchase', () async {
+    expect(await container.read(isPremiumProvider.future), isFalse);
 
     await emit(PurchaseStatus.purchased);
 
-    expect(await container.read(isAdFreeProvider.future), isTrue);
+    expect(await container.read(isPremiumProvider.future), isTrue);
   });
 }

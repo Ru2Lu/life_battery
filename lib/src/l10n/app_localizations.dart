@@ -230,17 +230,23 @@ abstract class AppLocalizations {
   /// **'Long press to edit your life'**
   String get longPressToEditHint;
 
-  /// No description provided for @removeAdsLabel.
+  /// No description provided for @premiumLabel.
   ///
   /// In en, this message translates to:
-  /// **'Remove ads'**
-  String get removeAdsLabel;
+  /// **'Premium'**
+  String get premiumLabel;
 
-  /// No description provided for @removeAdsPurchasedLabel.
+  /// No description provided for @premiumDescriptionContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Removes ads and unlocks the home screen widget.'**
+  String get premiumDescriptionContent;
+
+  /// No description provided for @premiumPurchasedLabel.
   ///
   /// In en, this message translates to:
   /// **'Purchased'**
-  String get removeAdsPurchasedLabel;
+  String get premiumPurchasedLabel;
 
   /// No description provided for @storeUnavailableContent.
   ///
@@ -251,7 +257,7 @@ abstract class AppLocalizations {
   /// No description provided for @purchaseSuccessContent.
   ///
   /// In en, this message translates to:
-  /// **'Thank you! Ads have been removed.'**
+  /// **'Thank you! Premium features are now unlocked.'**
   String get purchaseSuccessContent;
 
   /// No description provided for @purchasePendingContent.

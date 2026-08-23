@@ -27,13 +27,13 @@ class FakeBannerAdApiDataSource implements BannerAdApiDataSource {
 void main() {
   late FakeBannerAdApiDataSource fakeAds;
 
-  ProviderContainer buildContainer({required bool hasRemovedAds}) {
+  ProviderContainer buildContainer({required bool isPremium}) {
     fakeAds = FakeBannerAdApiDataSource();
     final container = ProviderContainer(
       overrides: [
         bannerAdApiDataSourceProvider.overrideWithValue(fakeAds),
         entitlementsLocalDataSourceProvider.overrideWithValue(
-          FakeEntitlementsLocalDataSource(hasRemovedAds: hasRemovedAds),
+          FakeEntitlementsLocalDataSource(isPremium: isPremium),
         ),
       ],
     );
@@ -41,8 +41,8 @@ void main() {
     return container;
   }
 
-  test('Does not initialize the SDK or load an ad when ad-free', () async {
-    final container = buildContainer(hasRemovedAds: true);
+  test('Does not initialize the SDK or load an ad when premium', () async {
+    final container = buildContainer(isPremium: true);
 
     final ad = await container.read(bannerAdProvider(width: 320).future);
 
@@ -51,8 +51,8 @@ void main() {
     expect(fakeAds.loadBannerCallCount, 0);
   });
 
-  test('Loads an ad when not ad-free', () async {
-    final container = buildContainer(hasRemovedAds: false);
+  test('Loads an ad when not premium', () async {
+    final container = buildContainer(isPremium: false);
 
     await container.read(bannerAdProvider(width: 320).future);
 

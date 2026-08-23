@@ -7,12 +7,13 @@ class EntitlementsRepository {
 
   final EntitlementsLocalDataSource _localDataSource;
 
-  /// Decides whether the user is entitled to an ad-free experience.
-  Future<bool> isAdFree() {
-    return _localDataSource.getHasRemovedAds();
+  /// Decides whether the user is entitled to the premium features
+  /// (ad removal and the home screen widget).
+  Future<bool> isPremium() {
+    return _localDataSource.getIsPremium();
   }
 
-  Future<void> markRemoveAdsPurchased() {
-    return _localDataSource.markHasRemovedAds();
+  Future<void> markPremiumPurchased() {
+    return _localDataSource.markIsPremium();
   }
 }

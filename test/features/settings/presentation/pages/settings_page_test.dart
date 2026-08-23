@@ -190,21 +190,21 @@ void main() {
     });
   });
 
-  group('Remove ads', () {
-    testWidgets('Displays remove ads label', (tester) async {
+  group('Premium', () {
+    testWidgets('Displays premium label', (tester) async {
       tester.platformDispatcher.localesTestValue = [const Locale('en')];
       await tester.pumpWidget(const TestSettingsPage());
       await tester.pumpAndSettle();
 
-      expect(find.text('Remove ads'), findsOneWidget);
+      expect(find.text('Premium'), findsOneWidget);
     }, variant: TargetPlatformVariant.only(TargetPlatform.iOS));
 
-    testWidgets('Displays Japanese remove ads label', (tester) async {
+    testWidgets('Displays Japanese premium label', (tester) async {
       tester.platformDispatcher.localesTestValue = [const Locale('ja')];
       await tester.pumpWidget(const TestSettingsPage());
       await tester.pumpAndSettle();
 
-      expect(find.text('広告を削除'), findsOneWidget);
+      expect(find.text('プレミアム'), findsOneWidget);
     }, variant: TargetPlatformVariant.only(TargetPlatform.iOS));
   });
 
@@ -227,12 +227,12 @@ void main() {
   });
 
   group('Purchases on Android', () {
-    testWidgets('Hides remove ads tile', (tester) async {
+    testWidgets('Hides premium tile', (tester) async {
       tester.platformDispatcher.localesTestValue = [const Locale('en')];
       await tester.pumpWidget(const TestSettingsPage());
       await tester.pumpAndSettle();
 
-      expect(find.text('Remove ads'), findsNothing);
+      expect(find.text('Premium'), findsNothing);
     }, variant: TargetPlatformVariant.only(TargetPlatform.android));
 
     testWidgets('Hides restore purchases tile', (tester) async {

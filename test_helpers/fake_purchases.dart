@@ -9,12 +9,12 @@ class FakePurchasesApiDataSource implements PurchasesApiDataSource {
     this.available = true,
     ProductDetails? product,
     this.buyResult = true,
-  }) : product = product ?? defaultRemoveAdsProduct;
+  }) : product = product ?? defaultPremiumProduct;
 
-  static final defaultRemoveAdsProduct = ProductDetails(
-    id: ProductIds.removeAds,
-    title: 'Remove ads',
-    description: 'Removes ads from the app',
+  static final defaultPremiumProduct = ProductDetails(
+    id: ProductIds.premiumLifetime,
+    title: 'Premium',
+    description: 'Removes ads and unlocks the widget',
     price: r'$1.00',
     rawPrice: 1,
     currencyCode: 'USD',
@@ -37,7 +37,7 @@ class FakePurchasesApiDataSource implements PurchasesApiDataSource {
   Future<bool> isAvailable() async => available;
 
   @override
-  Future<ProductDetails?> fetchRemoveAdsProduct() async => product;
+  Future<ProductDetails?> fetchPremiumProduct() async => product;
 
   @override
   Future<bool> buyNonConsumable({required ProductDetails product}) async {
@@ -58,7 +58,7 @@ class FakePurchasesApiDataSource implements PurchasesApiDataSource {
 
 PurchaseDetails buildPurchaseDetails({
   required PurchaseStatus status,
-  String productID = ProductIds.removeAds,
+  String productID = ProductIds.premiumLifetime,
   bool pendingCompletePurchase = false,
 }) {
   return PurchaseDetails(

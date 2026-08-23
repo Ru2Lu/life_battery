@@ -2,8 +2,8 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:life_battery/src/features/purchases/data/api/product_ids.dart';
 import 'package:life_battery/src/features/purchases/data/entitlements_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
-import 'package:life_battery/src/features/purchases/domain/remove_ads_purchase_status.dart';
-import 'package:life_battery/src/features/purchases/presentation/providers/is_ad_free_provider.dart';
+import 'package:life_battery/src/features/purchases/domain/premium_purchase_status.dart';
+import 'package:life_battery/src/features/purchases/presentation/providers/is_premium_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'purchase_updates_provider.g.dart';
@@ -16,11 +16,11 @@ part 'purchase_updates_provider.g.dart';
 @Riverpod(keepAlive: true)
 class PurchaseUpdates extends _$PurchaseUpdates {
   @override
-  RemoveAdsPurchaseStatus build() {
+  PremiumPurchaseStatus build() {
     final repository = ref.watch(purchasesRepositoryProvider);
     final subscription = repository.purchaseStream.listen(_onPurchaseUpdates);
     ref.onDispose(subscription.cancel);
-    return RemoveAdsPurchaseStatus.none;
+    return PremiumPurchaseStatus.none;
   }
 
   Future<void> _onPurchaseUpdates(List<PurchaseDetails> purchases) async {
@@ -32,21 +32,21 @@ class PurchaseUpdates extends _$PurchaseUpdates {
   Future<void> _handlePurchase(PurchaseDetails purchase) async {
     switch (purchase.status) {
       case PurchaseStatus.purchased || PurchaseStatus.restored:
-        if (purchase.productID == ProductIds.removeAds) {
+        if (purchase.productID == ProductIds.premiumLifetime) {
           await ref
               .read(entitlementsRepositoryProvider)
-              .markRemoveAdsPurchased();
-          ref.invalidate(isAdFreeProvider);
+              .markPremiumPurchased();
+          ref.invalidate(isPremiumProvider);
           state = purchase.status == PurchaseStatus.purchased
-              ? RemoveAdsPurchaseStatus.purchased
-              : RemoveAdsPurchaseStatus.restored;
+              ? PremiumPurchaseStatus.purchased
+              : PremiumPurchaseStatus.restored;
         }
       case PurchaseStatus.pending:
-        state = RemoveAdsPurchaseStatus.pending;
+        state = PremiumPurchaseStatus.pending;
       case PurchaseStatus.error:
-        state = RemoveAdsPurchaseStatus.error;
+        state = PremiumPurchaseStatus.error;
       case PurchaseStatus.canceled:
-        state = RemoveAdsPurchaseStatus.canceled;
+        state = PremiumPurchaseStatus.canceled;
     }
 
     // Required for every finished transaction regardless of status to

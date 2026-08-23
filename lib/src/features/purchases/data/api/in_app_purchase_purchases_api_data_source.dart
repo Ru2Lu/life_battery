@@ -15,10 +15,10 @@ class InAppPurchasePurchasesApiDataSource implements PurchasesApiDataSource {
   }
 
   @override
-  Future<ProductDetails?> fetchRemoveAdsProduct() async {
+  Future<ProductDetails?> fetchPremiumProduct() async {
     final response = await _inAppPurchase.queryProductDetails(ProductIds.all);
     for (final product in response.productDetails) {
-      if (product.id == ProductIds.removeAds) {
+      if (product.id == ProductIds.premiumLifetime) {
         return product;
       }
     }

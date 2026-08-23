@@ -23,7 +23,7 @@ const purchaseUpdatesProvider = PurchaseUpdatesProvider._();
 /// deferred purchases (Ask to Buy) may be approved days later and are
 /// delivered right after app start.
 final class PurchaseUpdatesProvider
-    extends $NotifierProvider<PurchaseUpdates, RemoveAdsPurchaseStatus> {
+    extends $NotifierProvider<PurchaseUpdates, PremiumPurchaseStatus> {
   /// Listens to the store purchase stream for the whole app session.
   ///
   /// keepAlive because purchases can complete outside the settings screen:
@@ -48,15 +48,15 @@ final class PurchaseUpdatesProvider
   PurchaseUpdates create() => PurchaseUpdates();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(RemoveAdsPurchaseStatus value) {
+  Override overrideWithValue(PremiumPurchaseStatus value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<RemoveAdsPurchaseStatus>(value),
+      providerOverride: $SyncValueProvider<PremiumPurchaseStatus>(value),
     );
   }
 }
 
-String _$purchaseUpdatesHash() => r'0ebb20752ba7e056119592169adb489ca0ca5e91';
+String _$purchaseUpdatesHash() => r'd45be9b2518fa8afddd2d32adc9081ef8636d52b';
 
 /// Listens to the store purchase stream for the whole app session.
 ///
@@ -64,19 +64,18 @@ String _$purchaseUpdatesHash() => r'0ebb20752ba7e056119592169adb489ca0ca5e91';
 /// deferred purchases (Ask to Buy) may be approved days later and are
 /// delivered right after app start.
 
-abstract class _$PurchaseUpdates extends $Notifier<RemoveAdsPurchaseStatus> {
-  RemoveAdsPurchaseStatus build();
+abstract class _$PurchaseUpdates extends $Notifier<PremiumPurchaseStatus> {
+  PremiumPurchaseStatus build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref =
-        this.ref as $Ref<RemoveAdsPurchaseStatus, RemoveAdsPurchaseStatus>;
+    final ref = this.ref as $Ref<PremiumPurchaseStatus, PremiumPurchaseStatus>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<RemoveAdsPurchaseStatus, RemoveAdsPurchaseStatus>,
-              RemoveAdsPurchaseStatus,
+              AnyNotifier<PremiumPurchaseStatus, PremiumPurchaseStatus>,
+              PremiumPurchaseStatus,
               Object?,
               Object?
             >;

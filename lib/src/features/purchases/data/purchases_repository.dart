@@ -16,13 +16,13 @@ class PurchasesRepository {
     return _apiDataSource.isAvailable();
   }
 
-  /// The remove_ads product, or null when it cannot be fetched.
-  Future<ProductDetails?> fetchRemoveAdsProduct() {
-    return _apiDataSource.fetchRemoveAdsProduct();
+  /// The premium product, or null when it cannot be fetched.
+  Future<ProductDetails?> fetchPremiumProduct() {
+    return _apiDataSource.fetchPremiumProduct();
   }
 
-  /// Requests the remove_ads purchase; true when the request was accepted.
-  Future<bool> buyRemoveAds({required ProductDetails product}) {
+  /// Requests the premium purchase; true when the request was accepted.
+  Future<bool> buyPremium({required ProductDetails product}) {
     return _apiDataSource.buyNonConsumable(product: product);
   }
 
