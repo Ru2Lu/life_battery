@@ -8,6 +8,7 @@ class FakePurchasesApiDataSource implements PurchasesApiDataSource {
   FakePurchasesApiDataSource({
     this.available = true,
     ProductDetails? product,
+    this.buyResult = true,
   }) : product = product ?? defaultRemoveAdsProduct;
 
   static final defaultRemoveAdsProduct = ProductDetails(
@@ -23,7 +24,9 @@ class FakePurchasesApiDataSource implements PurchasesApiDataSource {
 
   bool available;
   ProductDetails? product;
+  bool buyResult;
 
+  final boughtProducts = <ProductDetails>[];
   final completedPurchases = <PurchaseDetails>[];
 
   @override
@@ -34,6 +37,12 @@ class FakePurchasesApiDataSource implements PurchasesApiDataSource {
 
   @override
   Future<ProductDetails?> fetchRemoveAdsProduct() async => product;
+
+  @override
+  Future<bool> buyNonConsumable({required ProductDetails product}) async {
+    boughtProducts.add(product);
+    return buyResult;
+  }
 
   @override
   Future<void> completePurchase(PurchaseDetails purchase) async {

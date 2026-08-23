@@ -248,6 +248,24 @@ abstract class AppLocalizations {
   /// **'The store is currently unavailable.'**
   String get storeUnavailableContent;
 
+  /// No description provided for @purchaseSuccessContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you! Ads have been removed.'**
+  String get purchaseSuccessContent;
+
+  /// No description provided for @purchasePendingContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Your purchase is pending approval.'**
+  String get purchasePendingContent;
+
+  /// No description provided for @purchaseErrorContent.
+  ///
+  /// In en, this message translates to:
+  /// **'The purchase could not be completed. Please try again.'**
+  String get purchaseErrorContent;
+
   /// No description provided for @todaysMessageHint.
   ///
   /// In en, this message translates to:

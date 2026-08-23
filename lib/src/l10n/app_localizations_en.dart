@@ -90,6 +90,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get storeUnavailableContent => 'The store is currently unavailable.';
 
   @override
+  String get purchaseSuccessContent => 'Thank you! Ads have been removed.';
+
+  @override
+  String get purchasePendingContent => 'Your purchase is pending approval.';
+
+  @override
+  String get purchaseErrorContent =>
+      'The purchase could not be completed. Please try again.';
+
+  @override
   String get todaysMessageHint =>
       'This moment is the youngest you\'ll ever be.';
 }

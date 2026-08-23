@@ -26,6 +26,19 @@ class InAppPurchasePurchasesApiDataSource implements PurchasesApiDataSource {
   }
 
   @override
+  Future<bool> buyNonConsumable({required ProductDetails product}) async {
+    try {
+      return await _inAppPurchase.buyNonConsumable(
+        purchaseParam: PurchaseParam(productDetails: product),
+      );
+    } on Exception catch (_) {
+      // The store throws when a purchase is already pending or the item is
+      // already owned. The restore flow is the recovery path for the latter.
+      return false;
+    }
+  }
+
+  @override
   Future<void> completePurchase(PurchaseDetails purchase) {
     return _inAppPurchase.completePurchase(purchase);
   }

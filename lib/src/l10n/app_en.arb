@@ -31,5 +31,8 @@
   "removeAdsLabel": "Remove ads",
   "removeAdsPurchasedLabel": "Purchased",
   "storeUnavailableContent": "The store is currently unavailable.",
+  "purchaseSuccessContent": "Thank you! Ads have been removed.",
+  "purchasePendingContent": "Your purchase is pending approval.",
+  "purchaseErrorContent": "The purchase could not be completed. Please try again.",
   "todaysMessageHint": "This moment is the youngest you'll ever be."
 }

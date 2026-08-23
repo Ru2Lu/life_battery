@@ -7,5 +7,7 @@ abstract interface class PurchasesApiDataSource {
 
   Future<ProductDetails?> fetchRemoveAdsProduct();
 
+  Future<bool> buyNonConsumable({required ProductDetails product});
+
   Future<void> completePurchase(PurchaseDetails purchase);
 }

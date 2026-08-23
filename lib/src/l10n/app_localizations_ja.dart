@@ -88,5 +88,14 @@ class AppLocalizationsJa extends AppLocalizations {
   String get storeUnavailableContent => '現在ストアを利用できません。';
 
   @override
+  String get purchaseSuccessContent => 'ご購入ありがとうございます。広告を削除しました。';
+
+  @override
+  String get purchasePendingContent => '購入は承認待ちです。';
+
+  @override
+  String get purchaseErrorContent => '購入を完了できませんでした。もう一度お試しください。';
+
+  @override
   String get todaysMessageHint => 'この瞬間が、一番若い自分';
 }

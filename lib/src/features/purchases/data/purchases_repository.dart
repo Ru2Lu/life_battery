@@ -21,6 +21,11 @@ class PurchasesRepository {
     return _apiDataSource.fetchRemoveAdsProduct();
   }
 
+  /// Requests the remove_ads purchase; true when the request was accepted.
+  Future<bool> buyRemoveAds({required ProductDetails product}) {
+    return _apiDataSource.buyNonConsumable(product: product);
+  }
+
   /// Finishes a store transaction; required for every finished purchase.
   Future<void> completePurchase(PurchaseDetails purchase) {
     return _apiDataSource.completePurchase(purchase);

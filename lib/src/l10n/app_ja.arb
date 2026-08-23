@@ -31,5 +31,8 @@
   "removeAdsLabel": "広告を削除",
   "removeAdsPurchasedLabel": "購入済み",
   "storeUnavailableContent": "現在ストアを利用できません。",
+  "purchaseSuccessContent": "ご購入ありがとうございます。広告を削除しました。",
+  "purchasePendingContent": "購入は承認待ちです。",
+  "purchaseErrorContent": "購入を完了できませんでした。もう一度お試しください。",
   "todaysMessageHint": "この瞬間が、一番若い自分"
 }
