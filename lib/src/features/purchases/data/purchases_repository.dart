@@ -7,6 +7,10 @@ class PurchasesRepository {
 
   final PurchasesApiDataSource _apiDataSource;
 
+  /// Purchase updates from the store, including deferred ones.
+  Stream<List<PurchaseDetails>> get purchaseStream =>
+      _apiDataSource.purchaseStream;
+
   /// Whether the store is available on this device.
   Future<bool> isAvailable() {
     return _apiDataSource.isAvailable();
@@ -16,4 +20,5 @@ class PurchasesRepository {
   Future<ProductDetails?> fetchRemoveAdsProduct() {
     return _apiDataSource.fetchRemoveAdsProduct();
   }
+
 }

@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:life_battery/src/features/purchases/presentation/providers/purchase_updates_provider.dart';
 import 'package:life_battery/src/features/settings/presentation/providers/app_theme_mode_provider.dart';
 import 'package:life_battery/src/l10n/app_localizations.dart';
 import 'package:life_battery/src/routing/app_router.dart';
@@ -12,6 +13,9 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Activates the app-wide purchase stream listener at startup.
+    ref.watch(purchaseUpdatesProvider);
+
     final goRouter = ref.watch(goRouterProvider);
     final themeMode = ref.watch(appThemeModeProvider).value ?? ThemeMode.system;
 

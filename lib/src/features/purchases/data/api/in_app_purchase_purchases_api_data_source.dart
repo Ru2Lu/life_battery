@@ -6,6 +6,10 @@ class InAppPurchasePurchasesApiDataSource implements PurchasesApiDataSource {
   InAppPurchase get _inAppPurchase => InAppPurchase.instance;
 
   @override
+  Stream<List<PurchaseDetails>> get purchaseStream =>
+      _inAppPurchase.purchaseStream;
+
+  @override
   Future<bool> isAvailable() {
     return _inAppPurchase.isAvailable();
   }
@@ -20,4 +24,5 @@ class InAppPurchasePurchasesApiDataSource implements PurchasesApiDataSource {
     }
     return null;
   }
+
 }
