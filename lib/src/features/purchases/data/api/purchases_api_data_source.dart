@@ -9,5 +9,7 @@ abstract interface class PurchasesApiDataSource {
 
   Future<bool> buyNonConsumable({required ProductDetails product});
 
+  Future<void> restorePurchases();
+
   Future<void> completePurchase(PurchaseDetails purchase);
 }

@@ -34,5 +34,7 @@
   "purchaseSuccessContent": "Thank you! Ads have been removed.",
   "purchasePendingContent": "Your purchase is pending approval.",
   "purchaseErrorContent": "The purchase could not be completed. Please try again.",
+  "restorePurchasesLabel": "Restore purchases",
+  "restoreRequestedContent": "Restoring purchases...",
   "todaysMessageHint": "This moment is the youngest you'll ever be."
 }

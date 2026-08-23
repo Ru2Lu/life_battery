@@ -100,6 +100,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'The purchase could not be completed. Please try again.';
 
   @override
+  String get restorePurchasesLabel => 'Restore purchases';
+
+  @override
+  String get restoreRequestedContent => 'Restoring purchases...';
+
+  @override
   String get todaysMessageHint =>
       'This moment is the youngest you\'ll ever be.';
 }

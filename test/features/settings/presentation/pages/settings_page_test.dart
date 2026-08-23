@@ -208,6 +208,24 @@ void main() {
     });
   });
 
+  group('Restore purchases', () {
+    testWidgets('Displays restore purchases label', (tester) async {
+      tester.platformDispatcher.localesTestValue = [const Locale('en')];
+      await tester.pumpWidget(const TestSettingsPage());
+      await tester.pumpAndSettle();
+
+      expect(find.text('Restore purchases'), findsOneWidget);
+    });
+
+    testWidgets('Displays Japanese restore purchases label', (tester) async {
+      tester.platformDispatcher.localesTestValue = [const Locale('ja')];
+      await tester.pumpWidget(const TestSettingsPage());
+      await tester.pumpAndSettle();
+
+      expect(find.text('以前の購入を復元'), findsOneWidget);
+    });
+  });
+
   group('Localization tests', () {
     testWidgets('Device locale is English when set to English', (tester) async {
       tester.platformDispatcher.localesTestValue = [const Locale('en')];

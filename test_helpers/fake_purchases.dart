@@ -27,6 +27,7 @@ class FakePurchasesApiDataSource implements PurchasesApiDataSource {
   bool buyResult;
 
   final boughtProducts = <ProductDetails>[];
+  int restoreCallCount = 0;
   final completedPurchases = <PurchaseDetails>[];
 
   @override
@@ -42,6 +43,11 @@ class FakePurchasesApiDataSource implements PurchasesApiDataSource {
   Future<bool> buyNonConsumable({required ProductDetails product}) async {
     boughtProducts.add(product);
     return buyResult;
+  }
+
+  @override
+  Future<void> restorePurchases() async {
+    restoreCallCount++;
   }
 
   @override

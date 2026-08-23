@@ -39,6 +39,11 @@ class InAppPurchasePurchasesApiDataSource implements PurchasesApiDataSource {
   }
 
   @override
+  Future<void> restorePurchases() {
+    return _inAppPurchase.restorePurchases();
+  }
+
+  @override
   Future<void> completePurchase(PurchaseDetails purchase) {
     return _inAppPurchase.completePurchase(purchase);
   }

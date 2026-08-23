@@ -26,6 +26,11 @@ class PurchasesRepository {
     return _apiDataSource.buyNonConsumable(product: product);
   }
 
+  /// Asks the store to redeliver past purchases as restored events.
+  Future<void> restorePurchases() {
+    return _apiDataSource.restorePurchases();
+  }
+
   /// Finishes a store transaction; required for every finished purchase.
   Future<void> completePurchase(PurchaseDetails purchase) {
     return _apiDataSource.completePurchase(purchase);

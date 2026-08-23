@@ -266,6 +266,18 @@ abstract class AppLocalizations {
   /// **'The purchase could not be completed. Please try again.'**
   String get purchaseErrorContent;
 
+  /// No description provided for @restorePurchasesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore purchases'**
+  String get restorePurchasesLabel;
+
+  /// No description provided for @restoreRequestedContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Restoring purchases...'**
+  String get restoreRequestedContent;
+
   /// No description provided for @todaysMessageHint.
   ///
   /// In en, this message translates to:

@@ -97,5 +97,11 @@ class AppLocalizationsJa extends AppLocalizations {
   String get purchaseErrorContent => '購入を完了できませんでした。もう一度お試しください。';
 
   @override
+  String get restorePurchasesLabel => '以前の購入を復元';
+
+  @override
+  String get restoreRequestedContent => '以前の購入を確認しています...';
+
+  @override
   String get todaysMessageHint => 'この瞬間が、一番若い自分';
 }
