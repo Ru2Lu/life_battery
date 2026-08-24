@@ -1,70 +1,102 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "widget.description" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "See your remaining life at a glance."
+  "sourceLanguage": "en",
+  "strings": {
+    "widget.dayUnit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "d"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "残りの人生をひと目で確認"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "日"
           }
         }
       }
     },
-    "widget.dayUnit" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "d"
+    "widget.description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See your remaining life at a glance."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "日"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "残りの人生をひと目で確認"
           }
         }
       }
     },
-    "widget.displayName" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Life Battery"
+    "widget.displayName": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Life Battery"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ライフバッテリー"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ライフバッテリー"
           }
         }
       }
     },
-    "widget.titleLabel" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "LIFE LEFT"
+    "widget.lockedDescription": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock in the app"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "残りの人生"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリ内で解除できます"
+          }
+        }
+      }
+    },
+    "widget.lockedTitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premium feature"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プレミアム機能"
+          }
+        }
+      }
+    },
+    "widget.titleLabel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LIFE LEFT"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "残りの人生"
           }
         }
       }
     }
   },
-  "version" : "1.1"
+  "version": "1.1"
 }

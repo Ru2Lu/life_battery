@@ -3,7 +3,8 @@ import WidgetKit
 
 struct Provider: TimelineProvider {
   func placeholder(in context: Context) -> LifeBatteryEntry {
-    LifeBatteryEntry(date: Date(), percentage: 100, remainingDays: 0, isPercentageMode: true)
+    LifeBatteryEntry(
+      date: Date(), percentage: 100, remainingDays: 0, isPercentageMode: true, isUnlocked: true)
   }
 
   func getSnapshot(in context: Context, completion: @escaping (LifeBatteryEntry) -> Void) {
@@ -40,9 +41,19 @@ struct Provider: TimelineProvider {
     return (birthDate, idealAge, isPercentageMode)
   }
 
+  // Written by the app when the premium entitlement changes. Defaults to
+  // locked so a database error or missing sync can never unlock the widget.
+  private func loadIsUnlocked() -> Bool {
+    let defaults = UserDefaults(suiteName: "group.com.rururu.lifebt")
+    return (defaults?.object(forKey: "isWidgetUnlocked") as? Bool) ?? false
+  }
+
   private func createEntry(date: Date, userData: (birthDate: Date, idealAge: Int, isPercentageMode: Bool)?) -> LifeBatteryEntry {
+    let isUnlocked = loadIsUnlocked()
     guard let userData else {
-      return LifeBatteryEntry(date: date, percentage: 100, remainingDays: 0, isPercentageMode: true)
+      return LifeBatteryEntry(
+        date: date, percentage: 100, remainingDays: 0, isPercentageMode: true,
+        isUnlocked: isUnlocked)
     }
 
     let percentage = remainingLifePercentage(
@@ -59,7 +70,8 @@ struct Provider: TimelineProvider {
       date: date,
       percentage: percentage,
       remainingDays: remainingDays,
-      isPercentageMode: userData.isPercentageMode
+      isPercentageMode: userData.isPercentageMode,
+      isUnlocked: isUnlocked
     )
   }
 }
@@ -69,6 +81,7 @@ struct LifeBatteryEntry: TimelineEntry {
   let percentage: Int
   let remainingDays: Int
   let isPercentageMode: Bool
+  let isUnlocked: Bool
 }
 
 private func parseISO8601Date(_ string: String) -> Date? {
@@ -155,10 +168,38 @@ func batteryColor(for percentage: Int) -> Color {
   return Color(red: 244 / 255, green: 63 / 255, blue: 94 / 255)
 }
 
+struct LockedWidgetView: View {
+  var body: some View {
+    VStack(spacing: 8) {
+      Image(systemName: "lock.fill")
+        .font(.system(size: 24))
+        .foregroundColor(.secondary)
+
+      Text(String(localized: "widget.lockedTitle"))
+        .font(.system(size: 12, weight: .bold))
+        .foregroundColor(.primary)
+
+      Text(String(localized: "widget.lockedDescription"))
+        .font(.system(size: 10))
+        .foregroundColor(.secondary)
+        .multilineTextAlignment(.center)
+    }
+    .padding(.horizontal, 4)
+  }
+}
+
 struct LifeBatteryWidgetEntryView: View {
   var entry: Provider.Entry
 
   var body: some View {
+    if entry.isUnlocked {
+      unlockedBody
+    } else {
+      LockedWidgetView()
+    }
+  }
+
+  private var unlockedBody: some View {
     VStack(spacing: 8) {
       Text(String(localized: "widget.titleLabel"))
         .font(.system(size: 12, weight: .bold))
@@ -228,9 +269,16 @@ struct LifeBatteryWidget: Widget {
 #Preview(as: .systemSmall) {
   LifeBatteryWidget()
 } timeline: {
-  LifeBatteryEntry(date: .now, percentage: 100, remainingDays: 30000, isPercentageMode: true)
-  LifeBatteryEntry(date: .now, percentage: 65, remainingDays: 19500, isPercentageMode: true)
-  LifeBatteryEntry(date: .now, percentage: 35, remainingDays: 10500, isPercentageMode: false)
-  LifeBatteryEntry(date: .now, percentage: 10, remainingDays: 3000, isPercentageMode: false)
-  LifeBatteryEntry(date: .now, percentage: 0, remainingDays: 0, isPercentageMode: true)
+  LifeBatteryEntry(
+    date: .now, percentage: 100, remainingDays: 30000, isPercentageMode: true, isUnlocked: true)
+  LifeBatteryEntry(
+    date: .now, percentage: 65, remainingDays: 19500, isPercentageMode: true, isUnlocked: true)
+  LifeBatteryEntry(
+    date: .now, percentage: 35, remainingDays: 10500, isPercentageMode: false, isUnlocked: true)
+  LifeBatteryEntry(
+    date: .now, percentage: 10, remainingDays: 3000, isPercentageMode: false, isUnlocked: true)
+  LifeBatteryEntry(
+    date: .now, percentage: 0, remainingDays: 0, isPercentageMode: true, isUnlocked: true)
+  LifeBatteryEntry(
+    date: .now, percentage: 100, remainingDays: 30000, isPercentageMode: true, isUnlocked: false)
 }
