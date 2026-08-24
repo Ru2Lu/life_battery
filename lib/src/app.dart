@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:life_battery/src/features/purchases/presentation/providers/premium_widget_sync_provider.dart';
 import 'package:life_battery/src/features/purchases/presentation/providers/purchase_updates_provider.dart';
 import 'package:life_battery/src/features/settings/presentation/providers/app_theme_mode_provider.dart';
 import 'package:life_battery/src/l10n/app_localizations.dart';
@@ -17,7 +18,9 @@ class App extends ConsumerWidget {
     // Activates the app-wide purchase stream listener at startup.
     // Purchases are sold on the App Store only.
     if (defaultTargetPlatform == TargetPlatform.iOS) {
-      ref.watch(purchaseUpdatesProvider);
+      ref
+        ..watch(purchaseUpdatesProvider)
+        ..watch(premiumWidgetSyncProvider);
     }
 
     final goRouter = ref.watch(goRouterProvider);
