@@ -1,10 +1,10 @@
 [
   {
     "language": "en-US",
-    "text": "・Added a Remove Ads purchase to the settings screen.\n・Added a Restore Purchases option to the settings screen."
+    "text": "・Updated internal libraries and improved stability."
   },
   {
     "language": "ja",
-    "text": "・設定画面から広告を削除できるようになりました。\n・設定画面に以前の購入を復元する項目を追加しました。"
+    "text": "・内部ライブラリを更新し、安定性を改善しました。"
   }
 ]
