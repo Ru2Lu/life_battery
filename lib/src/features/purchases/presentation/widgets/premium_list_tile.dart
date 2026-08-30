@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:life_battery/src/common_widgets/async_value_widget.dart';
-import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/domain/premium_purchase_status.dart';
 import 'package:life_battery/src/features/purchases/presentation/providers/is_premium_provider.dart';
 import 'package:life_battery/src/features/purchases/presentation/providers/premium_product_provider.dart';
 import 'package:life_battery/src/features/purchases/presentation/providers/purchase_updates_provider.dart';
+import 'package:life_battery/src/features/purchases/presentation/widgets/premium_bottom_sheet.dart';
 import 'package:life_battery/src/l10n/app_localizations.dart';
 
 class PremiumListTile extends ConsumerWidget {
@@ -51,17 +51,10 @@ class PremiumListTile extends ConsumerWidget {
           AsyncValue(value: final ProductDetails productDetails) =>
             _PremiumTile(
               subtitle: l10n.premiumDescriptionContent,
-              onTap: () async {
-                final messenger = ScaffoldMessenger.of(context);
-                final isRequested = await ref
-                    .read(purchasesRepositoryProvider)
-                    .buyPremium(product: productDetails);
-                if (!isRequested) {
-                  messenger.showSnackBar(
-                    SnackBar(content: Text(l10n.purchaseErrorContent)),
-                  );
-                }
-              },
+              onTap: () => PremiumBottomSheet.show(
+                context,
+                product: productDetails,
+              ),
             ),
           AsyncValue(isLoading: true) => _PremiumTile(
             subtitle: l10n.premiumDescriptionContent,

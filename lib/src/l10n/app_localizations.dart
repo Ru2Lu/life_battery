@@ -248,6 +248,12 @@ abstract class AppLocalizations {
   /// **'Purchased'**
   String get premiumPurchasedLabel;
 
+  /// No description provided for @purchaseButtonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase'**
+  String get purchaseButtonLabel;
+
   /// No description provided for @storeUnavailableContent.
   ///
   /// In en, this message translates to:

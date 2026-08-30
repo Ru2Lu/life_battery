@@ -136,12 +136,30 @@ void main() {
     expect(find.text('The store is currently unavailable.'), findsNothing);
   });
 
-  testWidgets('Requests the purchase when tapped', (tester) async {
+  testWidgets('Opens the bottom sheet with the purchase button when tapped', (
+    tester,
+  ) async {
     tester.platformDispatcher.localesTestValue = [const Locale('en')];
     await tester.pumpWidget(buildTile());
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('Premium'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Purchase'), findsOneWidget);
+    expect(fakeApi.boughtProducts, isEmpty);
+  });
+
+  testWidgets('Requests the purchase from the bottom sheet button', (
+    tester,
+  ) async {
+    tester.platformDispatcher.localesTestValue = [const Locale('en')];
+    await tester.pumpWidget(buildTile());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Premium'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Purchase'));
     await tester.pumpAndSettle();
 
     expect(fakeApi.boughtProducts, [fakeApi.product]);
@@ -157,6 +175,8 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('Premium'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Purchase'));
     await tester.pump();
     await tester.pump();
 
@@ -164,6 +184,37 @@ void main() {
       find.text('The purchase could not be completed. Please try again.'),
       findsOneWidget,
     );
+  });
+
+  testWidgets('Closes the bottom sheet on a purchase event', (tester) async {
+    tester.platformDispatcher.localesTestValue = [const Locale('en')];
+    await tester.pumpWidget(buildTile());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Premium'));
+    await tester.pumpAndSettle();
+
+    fakeApi.controller.add([
+      buildPurchaseDetails(
+        status: PurchaseStatus.purchased,
+        pendingCompletePurchase: true,
+      ),
+    ]);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Purchase'), findsNothing);
+    expect(find.text('Purchased'), findsOneWidget);
+  });
+
+  testWidgets('Shows the Japanese bottom sheet when tapped', (tester) async {
+    tester.platformDispatcher.localesTestValue = [const Locale('ja')];
+    await tester.pumpWidget(buildTile());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('プレミアム'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('購入'), findsOneWidget);
   });
 
   testWidgets('Ignores taps when entitled', (tester) async {

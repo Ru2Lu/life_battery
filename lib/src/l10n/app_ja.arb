@@ -31,6 +31,7 @@
   "premiumLabel": "プレミアム",
   "premiumDescriptionContent": "広告を削除し、ホーム画面ウィジェットを利用できます。",
   "premiumPurchasedLabel": "購入済み",
+  "purchaseButtonLabel": "購入",
   "storeUnavailableContent": "現在ストアを利用できません。",
   "purchaseSuccessContent": "ご購入ありがとうございます。プレミアム機能を利用できるようになりました。",
   "purchasePendingContent": "購入は承認待ちです。",

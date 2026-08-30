@@ -88,6 +88,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get premiumPurchasedLabel => '購入済み';
 
   @override
+  String get purchaseButtonLabel => '購入';
+
+  @override
   String get storeUnavailableContent => '現在ストアを利用できません。';
 
   @override

@@ -91,6 +91,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get premiumPurchasedLabel => 'Purchased';
 
   @override
+  String get purchaseButtonLabel => 'Purchase';
+
+  @override
   String get storeUnavailableContent => 'The store is currently unavailable.';
 
   @override
