@@ -88,6 +88,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get premiumPurchasedLabel => '購入済み';
 
   @override
+  String get premiumSheetTitle => '残りの時間をもっと大切に';
+
+  @override
   String get purchaseButtonLabel => '購入';
 
   @override

@@ -91,6 +91,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get premiumPurchasedLabel => 'Purchased';
 
   @override
+  String get premiumSheetTitle => 'Make the most of your time';
+
+  @override
   String get purchaseButtonLabel => 'Purchase';
 
   @override

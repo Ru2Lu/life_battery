@@ -248,6 +248,12 @@ abstract class AppLocalizations {
   /// **'Purchased'**
   String get premiumPurchasedLabel;
 
+  /// No description provided for @premiumSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Make the most of your time'**
+  String get premiumSheetTitle;
+
   /// No description provided for @purchaseButtonLabel.
   ///
   /// In en, this message translates to:

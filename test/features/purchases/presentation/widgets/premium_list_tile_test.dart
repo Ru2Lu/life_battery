@@ -146,6 +146,7 @@ void main() {
     await tester.tap(find.text('Premium'));
     await tester.pumpAndSettle();
 
+    expect(find.text('Make the most of your time'), findsOneWidget);
     expect(find.text('Purchase'), findsOneWidget);
     expect(fakeApi.boughtProducts, isEmpty);
   });
@@ -214,6 +215,7 @@ void main() {
     await tester.tap(find.text('プレミアム'));
     await tester.pumpAndSettle();
 
+    expect(find.text('残りの時間をもっと大切に'), findsOneWidget);
     expect(find.text('購入'), findsOneWidget);
   });
 

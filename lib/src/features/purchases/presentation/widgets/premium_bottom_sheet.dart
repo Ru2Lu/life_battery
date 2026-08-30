@@ -42,6 +42,16 @@ class PremiumBottomSheet extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 32, 24, 0),
+              child: Text(
+                l10n.premiumSheetTitle,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
