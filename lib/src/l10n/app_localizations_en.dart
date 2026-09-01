@@ -97,6 +97,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fiveStarsLabel => '5 stars';
 
   @override
+  String get premiumFeatureListTitle => 'What you get with Premium';
+
+  @override
   String get purchaseButtonLabel => 'Purchase';
 
   @override

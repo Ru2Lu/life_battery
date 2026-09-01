@@ -149,6 +149,7 @@ void main() {
     expect(find.text('Make the most of your time'), findsOneWidget);
     expect(find.text('5 stars'), findsOneWidget);
     expect(find.byIcon(Icons.star), findsNWidgets(5));
+    expect(find.text('What you get with Premium'), findsOneWidget);
     expect(find.text('Purchase'), findsOneWidget);
     expect(fakeApi.boughtProducts, isEmpty);
   });
@@ -219,6 +220,7 @@ void main() {
 
     expect(find.text('残りの時間をもっと大切に'), findsOneWidget);
     expect(find.text('5 stars'), findsOneWidget);
+    expect(find.text('プレミアムでできること'), findsOneWidget);
     expect(find.text('購入'), findsOneWidget);
   });
 

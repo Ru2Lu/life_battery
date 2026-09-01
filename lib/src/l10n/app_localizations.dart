@@ -260,6 +260,12 @@ abstract class AppLocalizations {
   /// **'5 stars'**
   String get fiveStarsLabel;
 
+  /// No description provided for @premiumFeatureListTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What you get with Premium'**
+  String get premiumFeatureListTitle;
+
   /// No description provided for @purchaseButtonLabel.
   ///
   /// In en, this message translates to:
