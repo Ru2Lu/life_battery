@@ -254,6 +254,12 @@ abstract class AppLocalizations {
   /// **'Make the most of your time'**
   String get premiumSheetTitle;
 
+  /// No description provided for @fiveStarsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'5 stars'**
+  String get fiveStarsLabel;
+
   /// No description provided for @purchaseButtonLabel.
   ///
   /// In en, this message translates to:

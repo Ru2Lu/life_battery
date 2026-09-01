@@ -5,6 +5,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/domain/premium_purchase_status.dart';
 import 'package:life_battery/src/features/purchases/presentation/providers/purchase_updates_provider.dart';
+import 'package:life_battery/src/features/purchases/presentation/widgets/five_star_rating.dart';
 import 'package:life_battery/src/l10n/app_localizations.dart';
 
 /// A modal sheet that starts the purchase of [product].
@@ -52,6 +53,8 @@ class PremiumBottomSheet extends ConsumerWidget {
                 ),
               ),
             ),
+            const SizedBox(height: 24),
+            const FiveStarRating(),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),

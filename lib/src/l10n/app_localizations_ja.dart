@@ -91,6 +91,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get premiumSheetTitle => '残りの時間をもっと大切に';
 
   @override
+  String get fiveStarsLabel => '5 stars';
+
+  @override
   String get purchaseButtonLabel => '購入';
 
   @override
