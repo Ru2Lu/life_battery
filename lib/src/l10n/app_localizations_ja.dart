@@ -97,6 +97,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get premiumFeatureListTitle => 'プレミアムでできること';
 
   @override
+  String get premiumFeatureAdRemovalLabel => 'すべての広告を非表示';
+
+  @override
+  String get premiumFeatureAdRemovalEmphasis => 'すべての広告';
+
+  @override
   String get purchaseButtonLabel => '購入';
 
   @override

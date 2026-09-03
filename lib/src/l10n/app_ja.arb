@@ -34,6 +34,8 @@
   "premiumSheetTitle": "残りの時間をもっと大切に",
   "fiveStarsLabel": "5 stars",
   "premiumFeatureListTitle": "プレミアムでできること",
+  "premiumFeatureAdRemovalLabel": "すべての広告を非表示",
+  "premiumFeatureAdRemovalEmphasis": "すべての広告",
   "purchaseButtonLabel": "購入",
   "storeUnavailableContent": "現在ストアを利用できません。",
   "purchaseSuccessContent": "ご購入ありがとうございます。プレミアム機能を利用できるようになりました。",

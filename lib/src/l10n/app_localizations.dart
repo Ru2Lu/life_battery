@@ -266,6 +266,18 @@ abstract class AppLocalizations {
   /// **'What you get with Premium'**
   String get premiumFeatureListTitle;
 
+  /// No description provided for @premiumFeatureAdRemovalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hides all ads'**
+  String get premiumFeatureAdRemovalLabel;
+
+  /// No description provided for @premiumFeatureAdRemovalEmphasis.
+  ///
+  /// In en, this message translates to:
+  /// **'all ads'**
+  String get premiumFeatureAdRemovalEmphasis;
+
   /// No description provided for @purchaseButtonLabel.
   ///
   /// In en, this message translates to:
