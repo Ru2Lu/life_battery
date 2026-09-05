@@ -83,8 +83,14 @@ class PremiumBottomSheet extends HookConsumerWidget {
                       child: switch (productAsyncValue) {
                         AsyncValue(value: final ProductDetails details) =>
                           PremiumPriceCard(price: details.price),
-                        AsyncValue(isLoading: true) => const PriceCardFrame(
-                          child: Center(child: CircularProgressIndicator()),
+                        AsyncValue(isLoading: true) => PriceCardFrame(
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
+                            ),
+                          ),
                         ),
                         // The store is unavailable or the product could not
                         // be fetched.
