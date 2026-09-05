@@ -7,6 +7,7 @@ import 'package:life_battery/src/features/purchases/domain/premium_purchase_stat
 import 'package:life_battery/src/features/purchases/presentation/providers/purchase_updates_provider.dart';
 import 'package:life_battery/src/features/purchases/presentation/widgets/five_star_rating.dart';
 import 'package:life_battery/src/features/purchases/presentation/widgets/premium_feature_list.dart';
+import 'package:life_battery/src/features/purchases/presentation/widgets/premium_price_card.dart';
 import 'package:life_battery/src/l10n/app_localizations.dart';
 
 /// A modal sheet that starts the purchase of [product].
@@ -44,44 +45,37 @@ class PremiumBottomSheet extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24, 32, 24, 0),
-              child: Text(
-                l10n.premiumSheetTitle,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(24, 32, 24, 0),
+                      child: Text(
+                        l10n.premiumSheetTitle,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headlineMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    const FiveStarRating(),
+                    const SizedBox(height: 32),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24),
+                      child: PremiumFeatureList(),
+                    ),
+                    const SizedBox(height: 32),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: PremiumPriceCard(price: product.price),
+                    ),
+                    const SizedBox(height: 24),
+                  ],
                 ),
               ),
             ),
-            const SizedBox(height: 24),
-            const FiveStarRating(),
-            const SizedBox(height: 32),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
-              child: PremiumFeatureList(),
-            ),
-            const SizedBox(height: 32),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.outlineVariant,
-                  ),
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: Text(
-                  product.price,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            const Spacer(),
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
               child: FilledButton(

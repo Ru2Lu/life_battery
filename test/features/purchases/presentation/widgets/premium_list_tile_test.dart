@@ -156,6 +156,7 @@ void main() {
       findsOneWidget,
     );
     expect(find.text(r'$1.00'), findsOneWidget);
+    expect(find.text('One-time purchase'), findsOneWidget);
     expect(find.text('Purchase'), findsOneWidget);
     expect(fakeApi.boughtProducts, isEmpty);
   });
@@ -200,6 +201,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('¥1,000'), findsOneWidget);
+    expect(find.text('買い切り'), findsOneWidget);
   });
 
   testWidgets('Requests the purchase from the bottom sheet button', (

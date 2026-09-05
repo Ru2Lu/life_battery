@@ -112,6 +112,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get premiumFeatureWidgetEmphasis => 'widget';
 
   @override
+  String get oneTimePurchaseLabel => 'One-time purchase';
+
+  @override
   String get purchaseButtonLabel => 'Purchase';
 
   @override

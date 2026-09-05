@@ -290,6 +290,12 @@ abstract class AppLocalizations {
   /// **'widget'**
   String get premiumFeatureWidgetEmphasis;
 
+  /// No description provided for @oneTimePurchaseLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'One-time purchase'**
+  String get oneTimePurchaseLabel;
+
   /// No description provided for @purchaseButtonLabel.
   ///
   /// In en, this message translates to:

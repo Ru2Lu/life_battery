@@ -109,6 +109,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get premiumFeatureWidgetEmphasis => 'ウィジェット';
 
   @override
+  String get oneTimePurchaseLabel => '買い切り';
+
+  @override
   String get purchaseButtonLabel => '購入';
 
   @override
