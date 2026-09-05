@@ -14,7 +14,7 @@ import 'package:life_battery/src/features/purchases/presentation/widgets/premium
 import 'package:life_battery/src/l10n/app_localizations.dart';
 
 /// A modal sheet that starts the purchase of the premium product.
-class PremiumBottomSheet extends ConsumerWidget {
+class PremiumBottomSheet extends HookConsumerWidget {
   const PremiumBottomSheet({super.key});
 
   static Future<void> show(BuildContext context) {
@@ -27,13 +27,21 @@ class PremiumBottomSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final purchaseError = useState<String?>(null);
 
     // Closes the sheet once the entitlement is granted so the settings
-    // page behind it shows the purchased state.
+    // page behind it shows the purchased state. A failed purchase surfaces
+    // inline above the purchase button.
     ref.listen(purchaseUpdatesProvider, (_, status) {
-      if (status == PremiumPurchaseStatus.purchased ||
-          status == PremiumPurchaseStatus.restored) {
-        Navigator.of(context).pop();
+      switch (status) {
+        case PremiumPurchaseStatus.purchased || PremiumPurchaseStatus.restored:
+          Navigator.of(context).pop();
+        case PremiumPurchaseStatus.error:
+          purchaseError.value = l10n.purchaseErrorContent;
+        case PremiumPurchaseStatus.pending ||
+            PremiumPurchaseStatus.canceled ||
+            PremiumPurchaseStatus.none:
+          break;
       }
     });
 
@@ -92,6 +100,19 @@ class PremiumBottomSheet extends ConsumerWidget {
                 ),
               ),
             ),
+            if (purchaseError.value != null) ...[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Text(
+                  purchaseError.value!,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+            ],
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: FilledButton(
@@ -110,14 +131,12 @@ class PremiumBottomSheet extends ConsumerWidget {
                 onPressed: product == null || isPremium
                     ? null
                     : () async {
-                        final messenger = ScaffoldMessenger.of(context);
+                        purchaseError.value = null;
                         final isRequested = await ref
                             .read(purchasesRepositoryProvider)
                             .buyPremium(product: product);
-                        if (!isRequested) {
-                          messenger.showSnackBar(
-                            SnackBar(content: Text(l10n.purchaseErrorContent)),
-                          );
+                        if (!isRequested && context.mounted) {
+                          purchaseError.value = l10n.purchaseErrorContent;
                         }
                       },
                 child: Text(
