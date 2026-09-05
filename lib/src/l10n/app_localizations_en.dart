@@ -84,8 +84,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get premiumLabel => 'Premium';
 
   @override
-  String get premiumDescriptionContent =>
-      'Removes ads and unlocks the home screen widget.';
+  String get premiumDescriptionContent => 'Unlock all features';
 
   @override
   String get premiumPurchasedLabel => 'Purchased';

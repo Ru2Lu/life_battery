@@ -82,7 +82,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get premiumLabel => 'プレミアム';
 
   @override
-  String get premiumDescriptionContent => '広告を削除し、ホーム画面ウィジェットを利用できます。';
+  String get premiumDescriptionContent => 'すべての機能を解放';
 
   @override
   String get premiumPurchasedLabel => '購入済み';

@@ -53,7 +53,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(
-      find.text('Removes ads and unlocks the home screen widget.'),
+      find.text('Unlock all features'),
       findsOneWidget,
     );
   });

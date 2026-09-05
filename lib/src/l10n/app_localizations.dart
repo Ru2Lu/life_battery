@@ -239,7 +239,7 @@ abstract class AppLocalizations {
   /// No description provided for @premiumDescriptionContent.
   ///
   /// In en, this message translates to:
-  /// **'Removes ads and unlocks the home screen widget.'**
+  /// **'Unlock all features'**
   String get premiumDescriptionContent;
 
   /// No description provided for @premiumPurchasedLabel.
