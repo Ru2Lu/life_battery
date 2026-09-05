@@ -28,6 +28,7 @@ class PremiumBottomSheet extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final purchaseError = useState<String?>(null);
+    final isPurchasing = useState(false);
 
     // Closes the sheet once the entitlement is granted so the settings
     // page behind it shows the purchased state. A failed purchase surfaces
@@ -128,22 +129,35 @@ class PremiumBottomSheet extends HookConsumerWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                onPressed: product == null || isPremium
+                onPressed: product == null || isPremium || isPurchasing.value
                     ? null
                     : () async {
                         purchaseError.value = null;
-                        final isRequested = await ref
-                            .read(purchasesRepositoryProvider)
-                            .buyPremium(product: product);
-                        if (!isRequested && context.mounted) {
-                          purchaseError.value = l10n.purchaseErrorContent;
+                        isPurchasing.value = true;
+                        try {
+                          final isRequested = await ref
+                              .read(purchasesRepositoryProvider)
+                              .buyPremium(product: product);
+                          if (!isRequested && context.mounted) {
+                            purchaseError.value = l10n.purchaseErrorContent;
+                          }
+                        } finally {
+                          if (context.mounted) {
+                            isPurchasing.value = false;
+                          }
                         }
                       },
-                child: Text(
-                  isPremium
-                      ? l10n.premiumPurchasedLabel
-                      : l10n.purchaseButtonLabel,
-                ),
+                child: isPurchasing.value
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Text(
+                        isPremium
+                            ? l10n.premiumPurchasedLabel
+                            : l10n.purchaseButtonLabel,
+                      ),
               ),
             ),
             const SizedBox(height: 4),
