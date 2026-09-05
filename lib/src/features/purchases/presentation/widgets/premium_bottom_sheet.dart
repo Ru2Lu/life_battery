@@ -80,6 +80,10 @@ class PremiumBottomSheet extends ConsumerWidget {
               padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
               child: FilledButton(
                 style: FilledButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.inverseSurface,
+                  foregroundColor: Theme.of(
+                    context,
+                  ).colorScheme.onInverseSurface,
                   minimumSize: const Size.fromHeight(56),
                   shape: const StadiumBorder(),
                   textStyle: const TextStyle(
