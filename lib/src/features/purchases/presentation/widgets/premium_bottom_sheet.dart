@@ -61,6 +61,26 @@ class PremiumBottomSheet extends ConsumerWidget {
               padding: EdgeInsets.symmetric(horizontal: 24),
               child: PremiumFeatureList(),
             ),
+            const SizedBox(height: 32),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.outlineVariant,
+                  ),
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Text(
+                  product.price,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),

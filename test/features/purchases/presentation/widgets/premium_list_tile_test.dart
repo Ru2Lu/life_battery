@@ -155,8 +155,51 @@ void main() {
       find.text('Check at a glance with the widget', findRichText: true),
       findsOneWidget,
     );
+    expect(find.text(r'$1.00'), findsOneWidget);
     expect(find.text('Purchase'), findsOneWidget);
     expect(fakeApi.boughtProducts, isEmpty);
+  });
+
+  testWidgets('Shows the dollar price on the bottom sheet', (
+    tester,
+  ) async {
+    tester.platformDispatcher.localesTestValue = [const Locale('en')];
+    fakeApi.product = ProductDetails(
+      id: FakePurchasesApiDataSource.defaultPremiumProduct.id,
+      title: 'Premium',
+      description: 'Removes ads and unlocks the widget',
+      price: r'$6.99',
+      rawPrice: 6.99,
+      currencyCode: 'USD',
+    );
+    await tester.pumpWidget(buildTile());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Premium'));
+    await tester.pumpAndSettle();
+
+    expect(find.text(r'$6.99'), findsOneWidget);
+  });
+
+  testWidgets('Shows the yen price on the Japanese bottom sheet', (
+    tester,
+  ) async {
+    tester.platformDispatcher.localesTestValue = [const Locale('ja')];
+    fakeApi.product = ProductDetails(
+      id: FakePurchasesApiDataSource.defaultPremiumProduct.id,
+      title: 'Premium',
+      description: 'Removes ads and unlocks the widget',
+      price: '¥1,000',
+      rawPrice: 1000,
+      currencyCode: 'JPY',
+    );
+    await tester.pumpWidget(buildTile());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('プレミアム'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('¥1,000'), findsOneWidget);
   });
 
   testWidgets('Requests the purchase from the bottom sheet button', (
