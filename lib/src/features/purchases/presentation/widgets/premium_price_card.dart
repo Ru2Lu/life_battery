@@ -40,7 +40,7 @@ class PremiumPriceCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             price,
-            style: theme.textTheme.titleLarge?.copyWith(
+            style: theme.textTheme.headlineMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
