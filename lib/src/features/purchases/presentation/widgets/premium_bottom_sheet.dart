@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
@@ -92,7 +93,7 @@ class PremiumBottomSheet extends ConsumerWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: FilledButton(
                 style: FilledButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.inverseSurface,
@@ -126,9 +127,50 @@ class PremiumBottomSheet extends ConsumerWidget {
                 ),
               ),
             ),
+            const SizedBox(height: 4),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(24, 0, 24, 16),
+              child: _RestoreButton(),
+            ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _RestoreButton extends HookConsumerWidget {
+  const _RestoreButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final isRestoring = useState(false);
+
+    return TextButton(
+      style: TextButton.styleFrom(
+        foregroundColor: Theme.of(context).colorScheme.onSurface,
+        textStyle: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+      onPressed: isRestoring.value
+          ? null
+          : () async {
+              isRestoring.value = true;
+              try {
+                await ref.read(purchasesRepositoryProvider).restorePurchases();
+              } finally {
+                if (context.mounted) {
+                  isRestoring.value = false;
+                }
+              }
+            },
+      child: isRestoring.value
+          ? const SizedBox(
+              width: 16,
+              height: 16,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
+          : Text(l10n.restorePurchasesLabel),
     );
   }
 }

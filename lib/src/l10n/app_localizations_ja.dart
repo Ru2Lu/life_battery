@@ -133,8 +133,5 @@ class AppLocalizationsJa extends AppLocalizations {
   String get restorePurchasesLabel => '以前の購入を復元';
 
   @override
-  String get restoreRequestedContent => '以前の購入を確認しています...';
-
-  @override
   String get todaysMessageHint => 'この瞬間が、一番若い自分';
 }

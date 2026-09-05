@@ -338,12 +338,6 @@ abstract class AppLocalizations {
   /// **'Restore purchases'**
   String get restorePurchasesLabel;
 
-  /// No description provided for @restoreRequestedContent.
-  ///
-  /// In en, this message translates to:
-  /// **'Restoring purchases...'**
-  String get restoreRequestedContent;
-
   /// No description provided for @todaysMessageHint.
   ///
   /// In en, this message translates to:

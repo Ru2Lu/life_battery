@@ -208,24 +208,6 @@ void main() {
     }, variant: TargetPlatformVariant.only(TargetPlatform.iOS));
   });
 
-  group('Restore purchases', () {
-    testWidgets('Displays restore purchases label', (tester) async {
-      tester.platformDispatcher.localesTestValue = [const Locale('en')];
-      await tester.pumpWidget(const TestSettingsPage());
-      await tester.pumpAndSettle();
-
-      expect(find.text('Restore purchases'), findsOneWidget);
-    }, variant: TargetPlatformVariant.only(TargetPlatform.iOS));
-
-    testWidgets('Displays Japanese restore purchases label', (tester) async {
-      tester.platformDispatcher.localesTestValue = [const Locale('ja')];
-      await tester.pumpWidget(const TestSettingsPage());
-      await tester.pumpAndSettle();
-
-      expect(find.text('以前の購入を復元'), findsOneWidget);
-    }, variant: TargetPlatformVariant.only(TargetPlatform.iOS));
-  });
-
   group('Purchases on Android', () {
     testWidgets('Hides premium tile', (tester) async {
       tester.platformDispatcher.localesTestValue = [const Locale('en')];
@@ -233,14 +215,6 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Premium'), findsNothing);
-    }, variant: TargetPlatformVariant.only(TargetPlatform.android));
-
-    testWidgets('Hides restore purchases tile', (tester) async {
-      tester.platformDispatcher.localesTestValue = [const Locale('en')];
-      await tester.pumpWidget(const TestSettingsPage());
-      await tester.pumpAndSettle();
-
-      expect(find.text('Restore purchases'), findsNothing);
     }, variant: TargetPlatformVariant.only(TargetPlatform.android));
   });
 

@@ -134,6 +134,22 @@ void main() {
   );
 
 
+  testWidgets('Requests the restore from the bottom sheet', (tester) async {
+    fakeApi.available = false;
+
+    tester.platformDispatcher.localesTestValue = [const Locale('en')];
+    await tester.pumpWidget(buildTile());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Premium'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Restore purchases'));
+    await tester.pumpAndSettle();
+
+    expect(fakeApi.restoreCallCount, 1);
+  });
+
   testWidgets('Opens the bottom sheet with the purchase button when tapped', (
     tester,
   ) async {
