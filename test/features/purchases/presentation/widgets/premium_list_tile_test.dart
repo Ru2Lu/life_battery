@@ -81,60 +81,58 @@ void main() {
     expect(find.text('購入済み'), findsOneWidget);
   });
 
-  testWidgets('Shows a notice when the store is unavailable', (tester) async {
-    fakeApi.available = false;
+  testWidgets(
+    'Disables the purchase on the sheet when the store is unavailable',
+    (tester) async {
+      fakeApi.available = false;
 
-    tester.platformDispatcher.localesTestValue = [const Locale('en')];
-    await tester.pumpWidget(buildTile());
-    await tester.pumpAndSettle();
+      tester.platformDispatcher.localesTestValue = [const Locale('en')];
+      await tester.pumpWidget(buildTile());
+      await tester.pumpAndSettle();
 
-    expect(find.text('Premium'), findsOneWidget);
-    expect(find.text('The store is currently unavailable.'), findsOneWidget);
-  });
+      await tester.tap(find.text('Premium'));
+      await tester.pumpAndSettle();
 
-  testWidgets('Shows a notice when the product cannot be fetched', (
-    tester,
-  ) async {
-    fakeApi.product = null;
+      expect(find.text('The store is currently unavailable.'), findsOneWidget);
+      final button = tester.widget<FilledButton>(
+        find.widgetWithText(FilledButton, 'Purchase'),
+      );
+      expect(button.onPressed, isNull);
+    },
+  );
 
-    tester.platformDispatcher.localesTestValue = [const Locale('en')];
-    await tester.pumpWidget(buildTile());
-    await tester.pumpAndSettle();
+  testWidgets(
+    'Disables the purchase on the sheet when the product cannot be fetched',
+    (tester) async {
+      fakeApi.product = null;
 
-    expect(find.text('The store is currently unavailable.'), findsOneWidget);
-  });
+      tester.platformDispatcher.localesTestValue = [const Locale('en')];
+      await tester.pumpWidget(buildTile());
+      await tester.pumpAndSettle();
 
-  testWidgets('Shows a Japanese notice when the store is unavailable', (
-    tester,
-  ) async {
-    fakeApi.available = false;
+      await tester.tap(find.text('Premium'));
+      await tester.pumpAndSettle();
 
-    tester.platformDispatcher.localesTestValue = [const Locale('ja')];
-    await tester.pumpWidget(buildTile());
-    await tester.pumpAndSettle();
+      expect(find.text('The store is currently unavailable.'), findsOneWidget);
+    },
+  );
 
-    expect(find.text('現在ストアを利用できません。'), findsOneWidget);
-  });
+  testWidgets(
+    'Shows a Japanese notice on the sheet when the store is unavailable',
+    (tester) async {
+      fakeApi.available = false;
 
-  testWidgets('Hides the notice when the store is available', (tester) async {
-    tester.platformDispatcher.localesTestValue = [const Locale('en')];
-    await tester.pumpWidget(buildTile());
-    await tester.pumpAndSettle();
+      tester.platformDispatcher.localesTestValue = [const Locale('ja')];
+      await tester.pumpWidget(buildTile());
+      await tester.pumpAndSettle();
 
-    expect(find.text('The store is currently unavailable.'), findsNothing);
-  });
+      await tester.tap(find.text('プレミアム'));
+      await tester.pumpAndSettle();
 
-  testWidgets('Hides the notice for the purchased state', (tester) async {
-    fakeApi.available = false;
-    fakeEntitlements.isPremium = true;
+      expect(find.text('現在ストアを利用できません。'), findsOneWidget);
+    },
+  );
 
-    tester.platformDispatcher.localesTestValue = [const Locale('en')];
-    await tester.pumpWidget(buildTile());
-    await tester.pumpAndSettle();
-
-    expect(find.text('Purchased'), findsOneWidget);
-    expect(find.text('The store is currently unavailable.'), findsNothing);
-  });
 
   testWidgets('Opens the bottom sheet with the purchase button when tapped', (
     tester,
@@ -284,7 +282,8 @@ void main() {
     expect(find.text('購入'), findsOneWidget);
   });
 
-  testWidgets('Ignores taps when entitled', (tester) async {
+  testWidgets('Opens the sheet with a disabled purchased button when entitled',
+      (tester) async {
     fakeEntitlements.isPremium = true;
 
     tester.platformDispatcher.localesTestValue = [const Locale('en')];
@@ -294,6 +293,11 @@ void main() {
     await tester.tap(find.text('Premium'));
     await tester.pumpAndSettle();
 
+    expect(find.text('What you get with Premium'), findsOneWidget);
+    final button = tester.widget<FilledButton>(
+      find.widgetWithText(FilledButton, 'Purchased'),
+    );
+    expect(button.onPressed, isNull);
     expect(fakeApi.boughtProducts, isEmpty);
   });
 

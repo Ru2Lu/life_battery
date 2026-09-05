@@ -4,25 +4,22 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/domain/premium_purchase_status.dart';
+import 'package:life_battery/src/features/purchases/presentation/providers/is_premium_provider.dart';
+import 'package:life_battery/src/features/purchases/presentation/providers/premium_product_provider.dart';
 import 'package:life_battery/src/features/purchases/presentation/providers/purchase_updates_provider.dart';
 import 'package:life_battery/src/features/purchases/presentation/widgets/five_star_rating.dart';
 import 'package:life_battery/src/features/purchases/presentation/widgets/premium_feature_list.dart';
 import 'package:life_battery/src/features/purchases/presentation/widgets/premium_price_card.dart';
 import 'package:life_battery/src/l10n/app_localizations.dart';
 
-/// A modal sheet that starts the purchase of [product].
+/// A modal sheet that starts the purchase of the premium product.
 class PremiumBottomSheet extends ConsumerWidget {
-  const PremiumBottomSheet({required this.product, super.key});
+  const PremiumBottomSheet({super.key});
 
-  final ProductDetails product;
-
-  static Future<void> show(
-    BuildContext context, {
-    required ProductDetails product,
-  }) {
+  static Future<void> show(BuildContext context) {
     return showCupertinoSheet<void>(
       context: context,
-      builder: (_) => PremiumBottomSheet(product: product),
+      builder: (_) => const PremiumBottomSheet(),
     );
   }
 
@@ -38,6 +35,10 @@ class PremiumBottomSheet extends ConsumerWidget {
         Navigator.of(context).pop();
       }
     });
+
+    final productAsyncValue = ref.watch(premiumProductProvider);
+    final product = productAsyncValue.value;
+    final isPremium = ref.watch(isPremiumProvider).value ?? false;
 
     // The Cupertino sheet route draws no background of its own.
     return Material(
@@ -69,7 +70,21 @@ class PremiumBottomSheet extends ConsumerWidget {
                     const SizedBox(height: 32),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: PremiumPriceCard(price: product.price),
+                      child: switch (productAsyncValue) {
+                        AsyncValue(value: final ProductDetails details) =>
+                          PremiumPriceCard(price: details.price),
+                        AsyncValue(isLoading: true) => const PriceCardFrame(
+                          child: Center(child: CircularProgressIndicator()),
+                        ),
+                        // The store is unavailable or the product could not
+                        // be fetched.
+                        AsyncValue() => PriceCardFrame(
+                          child: Text(
+                            l10n.storeUnavailableContent,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      },
                     ),
                     const SizedBox(height: 24),
                   ],
@@ -91,18 +106,24 @@ class PremiumBottomSheet extends ConsumerWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                onPressed: () async {
-                  final messenger = ScaffoldMessenger.of(context);
-                  final isRequested = await ref
-                      .read(purchasesRepositoryProvider)
-                      .buyPremium(product: product);
-                  if (!isRequested) {
-                    messenger.showSnackBar(
-                      SnackBar(content: Text(l10n.purchaseErrorContent)),
-                    );
-                  }
-                },
-                child: Text(l10n.purchaseButtonLabel),
+                onPressed: product == null || isPremium
+                    ? null
+                    : () async {
+                        final messenger = ScaffoldMessenger.of(context);
+                        final isRequested = await ref
+                            .read(purchasesRepositoryProvider)
+                            .buyPremium(product: product);
+                        if (!isRequested) {
+                          messenger.showSnackBar(
+                            SnackBar(content: Text(l10n.purchaseErrorContent)),
+                          );
+                        }
+                      },
+                child: Text(
+                  isPremium
+                      ? l10n.premiumPurchasedLabel
+                      : l10n.purchaseButtonLabel,
+                ),
               ),
             ),
           ],

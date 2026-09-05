@@ -1,6 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:life_battery/src/l10n/app_localizations.dart';
 
+/// The outlined rounded frame shared by the price card states.
+class PriceCardFrame extends StatelessWidget {
+  const PriceCardFrame({required this.child, super.key});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outlineVariant,
+        ),
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: child,
+    );
+  }
+}
+
 /// An outlined card showing the one-time purchase badge and the store price.
 class PremiumPriceCard extends StatelessWidget {
   const PremiumPriceCard({required this.price, super.key});
@@ -13,13 +35,7 @@ class PremiumPriceCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
-      decoration: BoxDecoration(
-        border: Border.all(color: theme.colorScheme.outlineVariant),
-        borderRadius: BorderRadius.circular(24),
-      ),
+    return PriceCardFrame(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
