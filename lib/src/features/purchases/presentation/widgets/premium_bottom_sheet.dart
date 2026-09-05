@@ -154,10 +154,13 @@ class PremiumBottomSheet extends HookConsumerWidget {
                         }
                       },
                 child: isPurchasing.value
-                    ? const SizedBox(
+                    ? SizedBox(
                         width: 20,
                         height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                       )
                     : Text(
                         isPremium
@@ -204,10 +207,13 @@ class _RestoreButton extends HookConsumerWidget {
               }
             },
       child: isRestoring.value
-          ? const SizedBox(
+          ? SizedBox(
               width: 16,
               height: 16,
-              child: CircularProgressIndicator(strokeWidth: 2),
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             )
           : Text(l10n.restorePurchasesLabel),
     );
