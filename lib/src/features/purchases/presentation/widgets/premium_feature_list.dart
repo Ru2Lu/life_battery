@@ -26,6 +26,13 @@ class PremiumFeatureList extends StatelessWidget {
           label: l10n.premiumFeatureAdRemovalLabel,
           emphasis: l10n.premiumFeatureAdRemovalEmphasis,
         ),
+        const SizedBox(height: 16),
+        _FeatureRow(
+          icon: Icons.widgets,
+          color: Theme.of(context).colorScheme.primary,
+          label: l10n.premiumFeatureWidgetLabel,
+          emphasis: l10n.premiumFeatureWidgetEmphasis,
+        ),
       ],
     );
   }

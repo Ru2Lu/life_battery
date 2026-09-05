@@ -278,6 +278,18 @@ abstract class AppLocalizations {
   /// **'all ads'**
   String get premiumFeatureAdRemovalEmphasis;
 
+  /// No description provided for @premiumFeatureWidgetLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Check at a glance with the widget'**
+  String get premiumFeatureWidgetLabel;
+
+  /// No description provided for @premiumFeatureWidgetEmphasis.
+  ///
+  /// In en, this message translates to:
+  /// **'widget'**
+  String get premiumFeatureWidgetEmphasis;
+
   /// No description provided for @purchaseButtonLabel.
   ///
   /// In en, this message translates to:

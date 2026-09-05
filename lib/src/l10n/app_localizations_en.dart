@@ -106,6 +106,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get premiumFeatureAdRemovalEmphasis => 'all ads';
 
   @override
+  String get premiumFeatureWidgetLabel => 'Check at a glance with the widget';
+
+  @override
+  String get premiumFeatureWidgetEmphasis => 'widget';
+
+  @override
   String get purchaseButtonLabel => 'Purchase';
 
   @override

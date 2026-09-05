@@ -103,6 +103,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get premiumFeatureAdRemovalEmphasis => 'すべての広告';
 
   @override
+  String get premiumFeatureWidgetLabel => 'ウィジェットでひと目でチェック';
+
+  @override
+  String get premiumFeatureWidgetEmphasis => 'ウィジェット';
+
+  @override
   String get purchaseButtonLabel => '購入';
 
   @override

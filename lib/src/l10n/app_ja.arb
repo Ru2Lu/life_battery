@@ -36,6 +36,8 @@
   "premiumFeatureListTitle": "プレミアムでできること",
   "premiumFeatureAdRemovalLabel": "すべての広告を非表示",
   "premiumFeatureAdRemovalEmphasis": "すべての広告",
+  "premiumFeatureWidgetLabel": "ウィジェットでひと目でチェック",
+  "premiumFeatureWidgetEmphasis": "ウィジェット",
   "purchaseButtonLabel": "購入",
   "storeUnavailableContent": "現在ストアを利用できません。",
   "purchaseSuccessContent": "ご購入ありがとうございます。プレミアム機能を利用できるようになりました。",

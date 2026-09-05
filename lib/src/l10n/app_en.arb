@@ -36,6 +36,8 @@
   "premiumFeatureListTitle": "What you get with Premium",
   "premiumFeatureAdRemovalLabel": "Hides all ads",
   "premiumFeatureAdRemovalEmphasis": "all ads",
+  "premiumFeatureWidgetLabel": "Check at a glance with the widget",
+  "premiumFeatureWidgetEmphasis": "widget",
   "purchaseButtonLabel": "Purchase",
   "storeUnavailableContent": "The store is currently unavailable.",
   "purchaseSuccessContent": "Thank you! Premium features are now unlocked.",
