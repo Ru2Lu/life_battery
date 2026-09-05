@@ -115,6 +115,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get oneTimePurchaseLabel => 'One-time purchase';
 
   @override
+  String get oneTimePurchaseDescription => 'Pay once, yours forever.';
+
+  @override
   String get purchaseButtonLabel => 'Purchase';
 
   @override

@@ -157,6 +157,7 @@ void main() {
     );
     expect(find.text(r'$1.00'), findsOneWidget);
     expect(find.text('One-time purchase'), findsOneWidget);
+    expect(find.text('Pay once, yours forever.'), findsOneWidget);
     expect(find.text('Purchase'), findsOneWidget);
     expect(fakeApi.boughtProducts, isEmpty);
   });
@@ -202,6 +203,10 @@ void main() {
 
     expect(find.text('¥1,000'), findsOneWidget);
     expect(find.text('買い切り'), findsOneWidget);
+    expect(
+      find.text('お支払いは一度だけ。すべての機能をずっとご利用いただけます。'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('Requests the purchase from the bottom sheet button', (

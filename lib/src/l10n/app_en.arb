@@ -39,6 +39,7 @@
   "premiumFeatureWidgetLabel": "Check at a glance with the widget",
   "premiumFeatureWidgetEmphasis": "widget",
   "oneTimePurchaseLabel": "One-time purchase",
+  "oneTimePurchaseDescription": "Pay once, yours forever.",
   "purchaseButtonLabel": "Purchase",
   "storeUnavailableContent": "The store is currently unavailable.",
   "purchaseSuccessContent": "Thank you! Premium features are now unlocked.",

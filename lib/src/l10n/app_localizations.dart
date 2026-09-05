@@ -296,6 +296,12 @@ abstract class AppLocalizations {
   /// **'One-time purchase'**
   String get oneTimePurchaseLabel;
 
+  /// No description provided for @oneTimePurchaseDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay once, yours forever.'**
+  String get oneTimePurchaseDescription;
+
   /// No description provided for @purchaseButtonLabel.
   ///
   /// In en, this message translates to:
