@@ -1,7 +1,7 @@
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:life_battery/src/features/purchases/data/api/product_ids.dart';
 import 'package:life_battery/src/features/purchases/data/entitlements_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
+import 'package:life_battery/src/features/purchases/domain/premium_plan.dart';
 import 'package:life_battery/src/features/purchases/domain/premium_purchase_status.dart';
 import 'package:life_battery/src/features/purchases/presentation/providers/is_premium_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -32,10 +32,8 @@ class PurchaseUpdates extends _$PurchaseUpdates {
   Future<void> _handlePurchase(PurchaseDetails purchase) async {
     switch (purchase.status) {
       case PurchaseStatus.purchased || PurchaseStatus.restored:
-        if (purchase.productID == ProductIds.premiumLifetime) {
-          await ref
-              .read(entitlementsRepositoryProvider)
-              .markPremiumPurchased();
+        if (PremiumPlan.allProductIds.contains(purchase.productID)) {
+          await ref.read(entitlementsRepositoryProvider).markPremiumPurchased();
           ref.invalidate(isPremiumProvider);
           state = purchase.status == PurchaseStatus.purchased
               ? PremiumPurchaseStatus.purchased

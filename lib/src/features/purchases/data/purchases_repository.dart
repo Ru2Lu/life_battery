@@ -1,5 +1,8 @@
+import 'package:collection/collection.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:life_battery/src/features/purchases/data/api/purchases_api_data_source.dart';
+import 'package:life_battery/src/features/purchases/domain/premium_plan.dart';
+import 'package:life_battery/src/features/purchases/domain/premium_products.dart';
 
 class PurchasesRepository {
   const PurchasesRepository({required PurchasesApiDataSource apiDataSource})
@@ -16,9 +19,16 @@ class PurchasesRepository {
     return _apiDataSource.isAvailable();
   }
 
-  /// The premium product, or null when it cannot be fetched.
-  Future<ProductDetails?> fetchPremiumProduct() {
-    return _apiDataSource.fetchPremiumProduct();
+  Future<PremiumProducts> fetchPremiumProducts() async {
+    final products = await _apiDataSource.fetchPremiumProducts();
+    return PremiumProducts(
+      monthly: products.firstWhereOrNull(
+        (product) => product.id == PremiumPlan.monthly.productId,
+      ),
+      lifetime: products.firstWhereOrNull(
+        (product) => product.id == PremiumPlan.lifetime.productId,
+      ),
+    );
   }
 
   /// Requests the premium purchase; true when the request was accepted.

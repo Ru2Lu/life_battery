@@ -112,6 +112,17 @@ class AppLocalizationsJa extends AppLocalizations {
   String get oneTimePurchaseLabel => '買い切り';
 
   @override
+  String get monthlyPlanLabel => '月額';
+
+  @override
+  String monthlyPriceLabel(String price) {
+    return '$price/月';
+  }
+
+  @override
+  String get monthlySubscriptionDescription => '毎月自動更新。いつでも解約できます。';
+
+  @override
   String get oneTimePurchaseDescription => 'お支払いは一度だけ。すべての機能をずっとご利用いただけます。';
 
   @override

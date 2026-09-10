@@ -114,6 +114,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get oneTimePurchaseLabel => 'One-time purchase';
 
   @override
+  String get monthlyPlanLabel => 'Monthly';
+
+  @override
+  String monthlyPriceLabel(String price) {
+    return '$price/mo';
+  }
+
+  @override
+  String get monthlySubscriptionDescription =>
+      'Renews monthly. Cancel anytime.';
+
+  @override
   String get oneTimePurchaseDescription => 'Pay once, yours forever.';
 
   @override

@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:life_battery/src/features/purchases/data/api/product_ids.dart';
 import 'package:life_battery/src/features/purchases/data/entitlements_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
+import 'package:life_battery/src/features/purchases/domain/premium_plan.dart';
 import 'package:life_battery/src/features/purchases/domain/premium_purchase_status.dart';
 import 'package:life_battery/src/features/purchases/presentation/providers/is_premium_provider.dart';
 import 'package:life_battery/src/features/purchases/presentation/providers/purchase_updates_provider.dart';
@@ -33,7 +33,7 @@ void main() {
 
   Future<void> emit(
     PurchaseStatus status, {
-    String productID = ProductIds.premiumLifetime,
+    String? productID,
     bool pendingCompletePurchase = false,
   }) async {
     fakeApi.controller.add([
@@ -137,6 +137,19 @@ void main() {
 
     expect(fakeEntitlements.isPremium, isFalse);
     expect(fakeApi.completedPurchases, hasLength(1));
+  });
+
+  test('Grants the entitlement on a monthly purchase', () async {
+    await emit(
+      PurchaseStatus.purchased,
+      productID: PremiumPlan.monthly.productId,
+    );
+
+    expect(fakeEntitlements.isPremium, isTrue);
+    expect(
+      container.read(purchaseUpdatesProvider),
+      PremiumPurchaseStatus.purchased,
+    );
   });
 
   test('Refreshes isPremium after a purchase', () async {

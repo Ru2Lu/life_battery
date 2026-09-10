@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:life_battery/src/features/purchases/data/api/product_ids.dart';
 import 'package:life_battery/src/features/purchases/data/api/purchases_api_data_source.dart';
+import 'package:life_battery/src/features/purchases/domain/premium_plan.dart';
 
 class FakePurchasesApiDataSource implements PurchasesApiDataSource {
   FakePurchasesApiDataSource({
@@ -12,7 +12,7 @@ class FakePurchasesApiDataSource implements PurchasesApiDataSource {
   }) : product = product ?? defaultPremiumProduct;
 
   static final defaultPremiumProduct = ProductDetails(
-    id: ProductIds.premiumLifetime,
+    id: PremiumPlan.lifetime.productId,
     title: 'Premium',
     description: 'Removes ads and unlocks the widget',
     price: r'$1.00',
@@ -20,10 +20,20 @@ class FakePurchasesApiDataSource implements PurchasesApiDataSource {
     currencyCode: 'USD',
   );
 
+  static final defaultMonthlyProduct = ProductDetails(
+    id: PremiumPlan.monthly.productId,
+    title: 'Premium Monthly',
+    description: 'Removes ads and unlocks the widget',
+    price: r'$0.99',
+    rawPrice: 0.99,
+    currencyCode: 'USD',
+  );
+
   final controller = StreamController<List<PurchaseDetails>>.broadcast();
 
   bool available;
   ProductDetails? product;
+  ProductDetails? monthlyProduct = defaultMonthlyProduct;
   bool buyResult;
 
   final boughtProducts = <ProductDetails>[];
@@ -37,7 +47,10 @@ class FakePurchasesApiDataSource implements PurchasesApiDataSource {
   Future<bool> isAvailable() async => available;
 
   @override
-  Future<ProductDetails?> fetchPremiumProduct() async => product;
+  Future<List<ProductDetails>> fetchPremiumProducts() async => [
+    ?product,
+    ?monthlyProduct,
+  ];
 
   @override
   Future<bool> buyNonConsumable({required ProductDetails product}) async {
@@ -58,11 +71,11 @@ class FakePurchasesApiDataSource implements PurchasesApiDataSource {
 
 PurchaseDetails buildPurchaseDetails({
   required PurchaseStatus status,
-  String productID = ProductIds.premiumLifetime,
+  String? productID,
   bool pendingCompletePurchase = false,
 }) {
   return PurchaseDetails(
-    productID: productID,
+    productID: productID ?? PremiumPlan.lifetime.productId,
     verificationData: PurchaseVerificationData(
       localVerificationData: 'local',
       serverVerificationData: 'server',

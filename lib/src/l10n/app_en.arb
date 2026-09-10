@@ -39,6 +39,16 @@
   "premiumFeatureWidgetLabel": "Check at a glance with the widget",
   "premiumFeatureWidgetEmphasis": "widget",
   "oneTimePurchaseLabel": "One-time purchase",
+  "monthlyPlanLabel": "Monthly",
+  "monthlyPriceLabel": "{price}/mo",
+  "@monthlyPriceLabel": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "monthlySubscriptionDescription": "Renews monthly. Cancel anytime.",
   "oneTimePurchaseDescription": "Pay once, yours forever.",
   "purchaseButtonLabel": "Purchase",
   "storeUnavailableContent": "The store is currently unavailable.",

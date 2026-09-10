@@ -296,6 +296,24 @@ abstract class AppLocalizations {
   /// **'One-time purchase'**
   String get oneTimePurchaseLabel;
 
+  /// No description provided for @monthlyPlanLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get monthlyPlanLabel;
+
+  /// No description provided for @monthlyPriceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{price}/mo'**
+  String monthlyPriceLabel(String price);
+
+  /// No description provided for @monthlySubscriptionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Renews monthly. Cancel anytime.'**
+  String get monthlySubscriptionDescription;
+
   /// No description provided for @oneTimePurchaseDescription.
   ///
   /// In en, this message translates to:

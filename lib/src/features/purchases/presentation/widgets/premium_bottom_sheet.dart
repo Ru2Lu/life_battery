@@ -2,15 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
+import 'package:life_battery/src/features/purchases/domain/premium_plan.dart';
+import 'package:life_battery/src/features/purchases/domain/premium_products.dart';
 import 'package:life_battery/src/features/purchases/domain/premium_purchase_status.dart';
 import 'package:life_battery/src/features/purchases/presentation/providers/is_premium_provider.dart';
-import 'package:life_battery/src/features/purchases/presentation/providers/premium_product_provider.dart';
+import 'package:life_battery/src/features/purchases/presentation/providers/premium_products_provider.dart';
 import 'package:life_battery/src/features/purchases/presentation/providers/purchase_updates_provider.dart';
 import 'package:life_battery/src/features/purchases/presentation/widgets/five_star_rating.dart';
 import 'package:life_battery/src/features/purchases/presentation/widgets/premium_feature_list.dart';
 import 'package:life_battery/src/features/purchases/presentation/widgets/premium_price_card.dart';
+import 'package:life_battery/src/features/purchases/presentation/widgets/restore_purchases_button.dart';
 import 'package:life_battery/src/l10n/app_localizations.dart';
 
 /// A modal sheet that starts the purchase of the premium product.
@@ -46,8 +48,9 @@ class PremiumBottomSheet extends HookConsumerWidget {
       }
     });
 
-    final productAsyncValue = ref.watch(premiumProductProvider);
-    final product = productAsyncValue.value;
+    final selectedPlan = useState(PremiumPlan.lifetime);
+    final productsAsyncValue = ref.watch(premiumProductsProvider);
+    final offer = productsAsyncValue.value?.resolve(selectedPlan.value);
     final isPremium = ref.watch(isPremiumProvider).value ?? false;
 
     // The Cupertino sheet route draws no background of its own.
@@ -80,9 +83,14 @@ class PremiumBottomSheet extends HookConsumerWidget {
                     const SizedBox(height: 32),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: switch (productAsyncValue) {
-                        AsyncValue(value: final ProductDetails details) =>
-                          PremiumPriceCard(price: details.price),
+                      child: switch (productsAsyncValue) {
+                        AsyncValue(value: final PremiumProducts details)
+                            when offer != null =>
+                          PremiumPriceCard(
+                            products: details,
+                            offer: offer,
+                            onPlanChanged: (plan) => selectedPlan.value = plan,
+                          ),
                         AsyncValue(isLoading: true) => PriceCardFrame(
                           child: Center(
                             child: CircularProgressIndicator(
@@ -92,7 +100,7 @@ class PremiumBottomSheet extends HookConsumerWidget {
                             ),
                           ),
                         ),
-                        // The store is unavailable or the product could not
+                        // The store is unavailable or no product could
                         // be fetched.
                         AsyncValue() => PriceCardFrame(
                           child: Text(
@@ -135,7 +143,7 @@ class PremiumBottomSheet extends HookConsumerWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                onPressed: product == null || isPremium || isPurchasing.value
+                onPressed: offer == null || isPremium || isPurchasing.value
                     ? null
                     : () async {
                         purchaseError.value = null;
@@ -143,7 +151,7 @@ class PremiumBottomSheet extends HookConsumerWidget {
                         try {
                           final isRequested = await ref
                               .read(purchasesRepositoryProvider)
-                              .buyPremium(product: product);
+                              .buyPremium(product: offer.product);
                           if (!isRequested && context.mounted) {
                             purchaseError.value = l10n.purchaseErrorContent;
                           }
@@ -172,50 +180,11 @@ class PremiumBottomSheet extends HookConsumerWidget {
             const SizedBox(height: 4),
             const Padding(
               padding: EdgeInsets.fromLTRB(24, 0, 24, 16),
-              child: _RestoreButton(),
+              child: RestorePurchasesButton(),
             ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class _RestoreButton extends HookConsumerWidget {
-  const _RestoreButton();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
-    final isRestoring = useState(false);
-
-    return TextButton(
-      style: TextButton.styleFrom(
-        foregroundColor: Theme.of(context).colorScheme.onSurface,
-        textStyle: const TextStyle(fontWeight: FontWeight.bold),
-      ),
-      onPressed: isRestoring.value
-          ? null
-          : () async {
-              isRestoring.value = true;
-              try {
-                await ref.read(purchasesRepositoryProvider).restorePurchases();
-              } finally {
-                if (context.mounted) {
-                  isRestoring.value = false;
-                }
-              }
-            },
-      child: isRestoring.value
-          ? SizedBox(
-              width: 16,
-              height: 16,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
-            )
-          : Text(l10n.restorePurchasesLabel),
     );
   }
 }

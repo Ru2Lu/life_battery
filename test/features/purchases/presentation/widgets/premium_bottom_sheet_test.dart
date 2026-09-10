@@ -1,0 +1,265 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:life_battery/src/features/purchases/data/entitlements_repository_provider.dart';
+import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
+import 'package:life_battery/src/features/purchases/presentation/widgets/premium_list_tile.dart';
+
+import '../../../../../test_helpers/fake_entitlements.dart';
+import '../../../../../test_helpers/fake_purchases.dart';
+import '../../../../../test_helpers/test_app.dart';
+
+void main() {
+  late FakePurchasesApiDataSource fakeApi;
+  late FakeEntitlementsLocalDataSource fakeEntitlements;
+
+  Widget buildTile() {
+    return ProviderScope(
+      overrides: [
+        purchasesApiDataSourceProvider.overrideWithValue(fakeApi),
+        entitlementsLocalDataSourceProvider.overrideWithValue(
+          fakeEntitlements,
+        ),
+      ],
+      child: const TestApp(
+        home: Scaffold(body: PremiumListTile()),
+      ),
+    );
+  }
+
+  setUp(() {
+    fakeApi = FakePurchasesApiDataSource();
+    fakeEntitlements = FakeEntitlementsLocalDataSource();
+  });
+
+  Future<void> openSheet(WidgetTester tester, {String locale = 'en'}) async {
+    tester.platformDispatcher.localesTestValue = [Locale(locale)];
+    await tester.pumpWidget(buildTile());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(locale == 'ja' ? 'プレミアム' : 'Premium'));
+    await tester.pumpAndSettle();
+  }
+
+  testWidgets(
+    'Disables the purchase on the sheet when the store is unavailable',
+    (tester) async {
+      fakeApi.available = false;
+
+      await openSheet(tester);
+
+      expect(find.text('The store is currently unavailable.'), findsOneWidget);
+      final button = tester.widget<FilledButton>(
+        find.widgetWithText(FilledButton, 'Purchase'),
+      );
+      expect(button.onPressed, isNull);
+    },
+  );
+
+  testWidgets(
+    'Disables the purchase on the sheet when no product can be fetched',
+    (tester) async {
+      fakeApi
+        ..product = null
+        ..monthlyProduct = null;
+
+      await openSheet(tester);
+
+      expect(find.text('The store is currently unavailable.'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'Shows a Japanese notice on the sheet when the store is unavailable',
+    (tester) async {
+      fakeApi.available = false;
+
+      await openSheet(tester, locale: 'ja');
+
+      expect(find.text('現在ストアを利用できません。'), findsOneWidget);
+    },
+  );
+
+  testWidgets('Requests the restore from the bottom sheet', (tester) async {
+    fakeApi.available = false;
+
+    await openSheet(tester);
+
+    await tester.tap(find.text('Restore purchases'));
+    await tester.pumpAndSettle();
+
+    expect(fakeApi.restoreCallCount, 1);
+  });
+
+  testWidgets('Opens the bottom sheet with the purchase button when tapped', (
+    tester,
+  ) async {
+    await openSheet(tester);
+
+    expect(find.text('Make the most of your time'), findsOneWidget);
+    expect(find.text('5 stars'), findsOneWidget);
+    expect(find.byIcon(Icons.star), findsNWidgets(5));
+    expect(find.text('What you get with Premium'), findsOneWidget);
+    expect(find.text('Hides all ads', findRichText: true), findsOneWidget);
+    expect(
+      find.text('Check at a glance with the widget', findRichText: true),
+      findsOneWidget,
+    );
+    expect(find.text(r'$1.00'), findsOneWidget);
+    expect(find.text('One-time purchase'), findsOneWidget);
+    expect(find.text('Pay once, yours forever.'), findsOneWidget);
+    expect(find.text('Purchase'), findsOneWidget);
+    expect(fakeApi.boughtProducts, isEmpty);
+  });
+
+  testWidgets('Shows the dollar price on the bottom sheet', (tester) async {
+    fakeApi.product = ProductDetails(
+      id: FakePurchasesApiDataSource.defaultPremiumProduct.id,
+      title: 'Premium',
+      description: 'Removes ads and unlocks the widget',
+      price: r'$6.99',
+      rawPrice: 6.99,
+      currencyCode: 'USD',
+    );
+
+    await openSheet(tester);
+
+    expect(find.text(r'$6.99'), findsOneWidget);
+  });
+
+  testWidgets('Shows the yen price on the Japanese bottom sheet', (
+    tester,
+  ) async {
+    fakeApi.product = ProductDetails(
+      id: FakePurchasesApiDataSource.defaultPremiumProduct.id,
+      title: 'Premium',
+      description: 'Removes ads and unlocks the widget',
+      price: '¥1,000',
+      rawPrice: 1000,
+      currencyCode: 'JPY',
+    );
+
+    await openSheet(tester, locale: 'ja');
+
+    expect(find.text('¥1,000'), findsOneWidget);
+    expect(find.text('買い切り'), findsOneWidget);
+    expect(
+      find.text('お支払いは一度だけ。すべての機能をずっとご利用いただけます。'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('Switches to the monthly plan on the bottom sheet', (
+    tester,
+  ) async {
+    await openSheet(tester);
+
+    expect(find.text('Monthly'), findsOneWidget);
+    expect(find.text('One-time purchase'), findsOneWidget);
+
+    await tester.tap(find.text('Monthly'));
+    await tester.pumpAndSettle();
+
+    expect(find.text(r'$0.99/mo'), findsOneWidget);
+    expect(find.text('Renews monthly. Cancel anytime.'), findsOneWidget);
+  });
+
+  testWidgets('Switches to the monthly plan on the Japanese bottom sheet', (
+    tester,
+  ) async {
+    await openSheet(tester, locale: 'ja');
+
+    await tester.tap(find.text('月額'));
+    await tester.pumpAndSettle();
+
+    expect(find.text(r'$0.99/月'), findsOneWidget);
+    expect(find.text('毎月自動更新。いつでも解約できます。'), findsOneWidget);
+  });
+
+  testWidgets('Purchases the monthly plan from the bottom sheet', (
+    tester,
+  ) async {
+    await openSheet(tester);
+
+    await tester.tap(find.text('Monthly'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Purchase'));
+    await tester.pumpAndSettle();
+
+    expect(fakeApi.boughtProducts, [fakeApi.monthlyProduct]);
+  });
+
+  testWidgets('Requests the purchase from the bottom sheet button', (
+    tester,
+  ) async {
+    await openSheet(tester);
+
+    await tester.tap(find.text('Purchase'));
+    await tester.pumpAndSettle();
+
+    expect(fakeApi.boughtProducts, [fakeApi.product]);
+  });
+
+  testWidgets('Shows an error when the purchase request fails', (
+    tester,
+  ) async {
+    fakeApi.buyResult = false;
+
+    await openSheet(tester);
+
+    await tester.tap(find.text('Purchase'));
+    await tester.pump();
+    await tester.pump();
+
+    expect(
+      find.text('The purchase could not be completed. Please try again.'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('Closes the bottom sheet on a purchase event', (tester) async {
+    await openSheet(tester);
+
+    fakeApi.controller.add([
+      buildPurchaseDetails(
+        status: PurchaseStatus.purchased,
+        pendingCompletePurchase: true,
+      ),
+    ]);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Purchase'), findsNothing);
+    expect(find.text('Purchased'), findsOneWidget);
+  });
+
+  testWidgets('Shows the Japanese bottom sheet when tapped', (tester) async {
+    await openSheet(tester, locale: 'ja');
+
+    expect(find.text('残りの時間をもっと大切に'), findsOneWidget);
+    expect(find.text('5 stars'), findsOneWidget);
+    expect(find.text('プレミアムでできること'), findsOneWidget);
+    expect(find.text('すべての広告を非表示', findRichText: true), findsOneWidget);
+    expect(
+      find.text('ウィジェットでひと目でチェック', findRichText: true),
+      findsOneWidget,
+    );
+    expect(find.text('購入'), findsOneWidget);
+  });
+
+  testWidgets(
+    'Opens the sheet with a disabled purchased button when entitled',
+    (tester) async {
+      fakeEntitlements.isPremium = true;
+
+      await openSheet(tester);
+
+      expect(find.text('What you get with Premium'), findsOneWidget);
+      final button = tester.widget<FilledButton>(
+        find.widgetWithText(FilledButton, 'Purchased'),
+      );
+      expect(button.onPressed, isNull);
+      expect(fakeApi.boughtProducts, isEmpty);
+    },
+  );
+}

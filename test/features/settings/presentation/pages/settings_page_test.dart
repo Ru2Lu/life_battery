@@ -191,31 +191,43 @@ void main() {
   });
 
   group('Premium', () {
-    testWidgets('Displays premium label', (tester) async {
-      tester.platformDispatcher.localesTestValue = [const Locale('en')];
-      await tester.pumpWidget(const TestSettingsPage());
-      await tester.pumpAndSettle();
+    testWidgets(
+      'Displays premium label',
+      (tester) async {
+        tester.platformDispatcher.localesTestValue = [const Locale('en')];
+        await tester.pumpWidget(const TestSettingsPage());
+        await tester.pumpAndSettle();
 
-      expect(find.text('Premium'), findsOneWidget);
-    }, variant: TargetPlatformVariant.only(TargetPlatform.iOS));
+        expect(find.text('Premium'), findsOneWidget);
+      },
+      variant: TargetPlatformVariant.only(TargetPlatform.iOS),
+    );
 
-    testWidgets('Displays Japanese premium label', (tester) async {
-      tester.platformDispatcher.localesTestValue = [const Locale('ja')];
-      await tester.pumpWidget(const TestSettingsPage());
-      await tester.pumpAndSettle();
+    testWidgets(
+      'Displays Japanese premium label',
+      (tester) async {
+        tester.platformDispatcher.localesTestValue = [const Locale('ja')];
+        await tester.pumpWidget(const TestSettingsPage());
+        await tester.pumpAndSettle();
 
-      expect(find.text('プレミアム'), findsOneWidget);
-    }, variant: TargetPlatformVariant.only(TargetPlatform.iOS));
+        expect(find.text('プレミアム'), findsOneWidget);
+      },
+      variant: TargetPlatformVariant.only(TargetPlatform.iOS),
+    );
   });
 
   group('Purchases on Android', () {
-    testWidgets('Hides premium tile', (tester) async {
-      tester.platformDispatcher.localesTestValue = [const Locale('en')];
-      await tester.pumpWidget(const TestSettingsPage());
-      await tester.pumpAndSettle();
+    testWidgets(
+      'Hides premium tile',
+      (tester) async {
+        tester.platformDispatcher.localesTestValue = [const Locale('en')];
+        await tester.pumpWidget(const TestSettingsPage());
+        await tester.pumpAndSettle();
 
-      expect(find.text('Premium'), findsNothing);
-    }, variant: TargetPlatformVariant.only(TargetPlatform.android));
+        expect(find.text('Premium'), findsNothing);
+      },
+      variant: TargetPlatformVariant.only(TargetPlatform.android),
+    );
   });
 
   group('Localization tests', () {
