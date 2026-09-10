@@ -8,7 +8,7 @@ class LocalDatabase {
   static final _instance = LocalDatabase._internal();
 
   static const _databaseName = 'app_database.db';
-  static const _databaseVersion = 9;
+  static const _databaseVersion = 10;
 
   static const _tableName = 'lifespan';
   static const _columnId = 'id';
@@ -22,7 +22,10 @@ class LocalDatabase {
   // Unused since v9; kept in upgraded databases. hasPremium replaced it
   // when the purchase was widened from ad removal to the premium unlock.
   static const _columnHasRemovedAds = 'hasRemovedAds';
+  // Renamed to hasPremiumLifetime in v10; the old name is still needed by
+  // the v9 migration and the v10 rename.
   static const _columnHasPremium = 'hasPremium';
+  static const _columnHasPremiumLifetime = 'hasPremiumLifetime';
 
   Database? _database;
 
@@ -56,7 +59,7 @@ class LocalDatabase {
             $_columnHasLongPressedBattery INTEGER NOT NULL,
             $_columnIsPercentageMode INTEGER NOT NULL,
             $_columnHasRemovedAds INTEGER NOT NULL,
-            $_columnHasPremium INTEGER NOT NULL
+            $_columnHasPremiumLifetime INTEGER NOT NULL
           )
         ''');
 
@@ -71,7 +74,7 @@ class LocalDatabase {
               _columnHasLongPressedBattery: 0,
               _columnIsPercentageMode: 1,
               _columnHasRemovedAds: 0,
-              _columnHasPremium: 0,
+              _columnHasPremiumLifetime: 0,
             },
           );
         },
@@ -118,6 +121,15 @@ class LocalDatabase {
               'ALTER TABLE $_tableName '
               'ADD COLUMN $_columnHasPremium INTEGER NOT NULL '
               'DEFAULT 0',
+            );
+          }
+          if (oldVersion < 10) {
+            // The monthly subscription narrows the premium flag to the
+            // lifetime purchase, so the name states which plan it records.
+            await db.execute(
+              'ALTER TABLE $_tableName '
+              'RENAME COLUMN $_columnHasPremium '
+              'TO $_columnHasPremiumLifetime',
             );
           }
         },

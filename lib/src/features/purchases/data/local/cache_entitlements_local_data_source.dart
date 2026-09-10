@@ -10,7 +10,7 @@ class CacheEntitlementsLocalDataSource implements EntitlementsLocalDataSource {
   final LocalDatabase _localDatabase;
 
   static const _tableName = 'lifespan';
-  static const _columnHasPremium = 'hasPremium';
+  static const _columnHasPremiumLifetime = 'hasPremiumLifetime';
 
   @override
   Future<bool> getIsPremium() async {
@@ -18,7 +18,7 @@ class CacheEntitlementsLocalDataSource implements EntitlementsLocalDataSource {
       final db = await _localDatabase.database;
       final result = await db.query(
         _tableName,
-        columns: [_columnHasPremium],
+        columns: [_columnHasPremiumLifetime],
       );
 
       if (result.isEmpty) {
@@ -26,7 +26,7 @@ class CacheEntitlementsLocalDataSource implements EntitlementsLocalDataSource {
       } else {
         // Falls back to the locked state on failure so that a database error
         // can never grant the entitlement by accident.
-        return result.first[_columnHasPremium] == 1;
+        return result.first[_columnHasPremiumLifetime] == 1;
       }
     } on DatabaseException catch (_) {
       return false;
@@ -39,7 +39,7 @@ class CacheEntitlementsLocalDataSource implements EntitlementsLocalDataSource {
       final db = await _localDatabase.database;
       final response = await db.query(_tableName);
       if (response.isNotEmpty) {
-        await db.update(_tableName, {_columnHasPremium: 1});
+        await db.update(_tableName, {_columnHasPremiumLifetime: 1});
       }
     } on DatabaseException catch (_) {}
   }
