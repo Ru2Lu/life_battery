@@ -86,6 +86,15 @@ void main() {
     expect(analytics.events.single.parameters, isNull);
   });
 
+  test(
+      'Sends the notification permission result as a '
+      'notification_permission_result event with the granted flag', () async {
+    await dataSource.logNotificationPermissionResult(granted: true);
+
+    expect(analytics.events.single.name, 'notification_permission_result');
+    expect(analytics.events.single.parameters, {'granted': 'true'});
+  });
+
   test('Sends the review tap as a review_tap event', () async {
     await dataSource.logReviewTap();
 

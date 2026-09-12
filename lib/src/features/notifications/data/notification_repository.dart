@@ -23,13 +23,15 @@ class NotificationRepository {
 
   /// Requests permission, cancels existing notifications, and schedules a new
   /// notification at the given [scheduledDate].
-  Future<void> scheduleNotification({
+  ///
+  /// Returns whether the notification permission is granted.
+  Future<bool> scheduleNotification({
     required String title,
     required String body,
     required DateTime scheduledDate,
   }) async {
     final granted = await _requestPermission();
-    if (!granted) return;
+    if (!granted) return false;
 
     await _cancelAll();
 
@@ -57,6 +59,7 @@ class NotificationRepository {
         await FirebaseCrashlytics.instance.recordError(error, stack);
       }
     }
+    return true;
   }
 
   Future<bool> _requestPermission() async {

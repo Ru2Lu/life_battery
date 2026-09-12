@@ -64,4 +64,12 @@ class FirebaseAnalyticsApiDataSource implements AnalyticsApiDataSource {
   Future<void> logReviewTap() {
     return _analytics.logEvent(name: 'review_tap');
   }
+
+  @override
+  Future<void> logNotificationPermissionResult({required bool granted}) {
+    return _analytics.logEvent(
+      name: 'notification_permission_result',
+      parameters: {'granted': granted.toString()},
+    );
+  }
 }

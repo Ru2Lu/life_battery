@@ -29,7 +29,7 @@ final class ScheduleNotificationUseCaseProvider
         argument: null,
         retry: null,
         name: r'scheduleNotificationUseCaseProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -50,4 +50,4 @@ final class ScheduleNotificationUseCaseProvider
 }
 
 String _$scheduleNotificationUseCaseHash() =>
-    r'3a982a0c01800de9d7e001b96b97757d9d77f53f';
+    r'3efe2991d958d982c3a6728d237ca12b883e0332';

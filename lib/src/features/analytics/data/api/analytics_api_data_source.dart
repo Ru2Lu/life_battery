@@ -18,4 +18,6 @@ abstract interface class AnalyticsApiDataSource {
   Future<void> logSubscriptionRenew();
 
   Future<void> logReviewTap();
+
+  Future<void> logNotificationPermissionResult({required bool granted});
 }

@@ -56,7 +56,7 @@ final class PurchaseUpdatesProvider
   }
 }
 
-String _$purchaseUpdatesHash() => r'c39e488e02a053b421c7c023d3de71aa0619a452';
+String _$purchaseUpdatesHash() => r'516b84504831cc1d91d3f6e7f3275acde5821446';
 
 /// Listens to the store purchase stream for the whole app session.
 ///

@@ -46,4 +46,8 @@ class AnalyticsRepository {
   Future<void> logReviewTap() {
     return _apiDataSource.logReviewTap();
   }
+
+  Future<void> logNotificationPermissionResult({required bool granted}) {
+    return _apiDataSource.logNotificationPermissionResult(granted: granted);
+  }
 }
