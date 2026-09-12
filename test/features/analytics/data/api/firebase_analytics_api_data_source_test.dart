@@ -1,6 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:life_battery/src/features/analytics/data/api/firebase_analytics_api_data_source.dart';
+import 'package:life_battery/src/features/purchases/domain/paywall_source.dart';
 import 'package:life_battery/src/features/purchases/domain/premium_plan.dart';
 
 class _RecordingFirebaseAnalytics extends Fake implements FirebaseAnalytics {
@@ -40,11 +41,12 @@ void main() {
     expect(analytics.events.single.parameters, isNull);
   });
 
-  test('Sends the paywall view as a paywall_view event', () async {
-    await dataSource.logPaywallView();
+  test('Sends the paywall view as a paywall_view event with the source',
+      () async {
+    await dataSource.logPaywallView(source: PaywallSource.settings);
 
     expect(analytics.events.single.name, 'paywall_view');
-    expect(analytics.events.single.parameters, isNull);
+    expect(analytics.events.single.parameters, {'source': 'settings'});
   });
 
   test('Sends the purchase start as a purchase_start event with the plan',

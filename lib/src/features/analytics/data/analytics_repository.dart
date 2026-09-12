@@ -1,4 +1,5 @@
 import 'package:life_battery/src/features/analytics/data/api/analytics_api_data_source.dart';
+import 'package:life_battery/src/features/purchases/domain/paywall_source.dart';
 import 'package:life_battery/src/features/purchases/domain/premium_plan.dart';
 
 /// Records product analytics events.
@@ -19,8 +20,8 @@ class AnalyticsRepository {
     return _apiDataSource.logOnboardingComplete();
   }
 
-  Future<void> logPaywallView() {
-    return _apiDataSource.logPaywallView();
+  Future<void> logPaywallView({required PaywallSource source}) {
+    return _apiDataSource.logPaywallView(source: source);
   }
 
   Future<void> logPurchaseStart({required PremiumPlan plan}) {

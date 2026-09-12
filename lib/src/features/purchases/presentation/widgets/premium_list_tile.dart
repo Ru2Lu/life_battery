@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:life_battery/src/common_widgets/async_value_widget.dart';
+import 'package:life_battery/src/features/purchases/domain/paywall_source.dart';
 import 'package:life_battery/src/features/purchases/domain/premium_purchase_status.dart';
 import 'package:life_battery/src/features/purchases/presentation/providers/is_premium_provider.dart';
 import 'package:life_battery/src/features/purchases/presentation/providers/purchase_updates_provider.dart';
@@ -41,13 +42,19 @@ class PremiumListTile extends ConsumerWidget {
               Icons.check,
               color: Theme.of(context).colorScheme.primary,
             ),
-            onTap: () => PremiumBottomSheet.show(context),
+            onTap: () => PremiumBottomSheet.show(
+              context,
+              source: PaywallSource.settings,
+            ),
           );
         }
 
         return _PremiumTile(
           subtitle: l10n.premiumDescriptionContent,
-          onTap: () => PremiumBottomSheet.show(context),
+          onTap: () => PremiumBottomSheet.show(
+            context,
+            source: PaywallSource.settings,
+          ),
         );
       },
     );

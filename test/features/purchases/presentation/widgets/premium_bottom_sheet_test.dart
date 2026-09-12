@@ -5,6 +5,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:life_battery/src/features/analytics/data/analytics_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/data/entitlements_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
+import 'package:life_battery/src/features/purchases/domain/paywall_source.dart';
 import 'package:life_battery/src/features/purchases/domain/premium_plan.dart';
 import 'package:life_battery/src/features/purchases/presentation/widgets/premium_list_tile.dart';
 
@@ -282,7 +283,7 @@ void main() {
     await tester.tap(find.text('Monthly'));
     await tester.pumpAndSettle();
 
-    expect(fakeAnalytics.paywallViewCount, 1);
+    expect(fakeAnalytics.paywallViews, [PaywallSource.settings]);
   });
 
   testWidgets('Logs the purchase start with the selected plan', (

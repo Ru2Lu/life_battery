@@ -1,3 +1,4 @@
+import 'package:life_battery/src/features/purchases/domain/paywall_source.dart';
 import 'package:life_battery/src/features/purchases/domain/premium_plan.dart';
 
 abstract interface class AnalyticsApiDataSource {
@@ -5,7 +6,7 @@ abstract interface class AnalyticsApiDataSource {
 
   Future<void> logOnboardingComplete();
 
-  Future<void> logPaywallView();
+  Future<void> logPaywallView({required PaywallSource source});
 
   Future<void> logPurchaseStart({required PremiumPlan plan});
 

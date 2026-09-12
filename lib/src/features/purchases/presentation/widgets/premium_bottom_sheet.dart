@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:life_battery/src/features/analytics/data/analytics_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
+import 'package:life_battery/src/features/purchases/domain/paywall_source.dart';
 import 'package:life_battery/src/features/purchases/domain/premium_plan.dart';
 import 'package:life_battery/src/features/purchases/domain/premium_products.dart';
 import 'package:life_battery/src/features/purchases/domain/premium_purchase_status.dart';
@@ -20,12 +21,18 @@ import 'package:life_battery/src/l10n/app_localizations.dart';
 
 /// A modal sheet that starts the purchase of the premium product.
 class PremiumBottomSheet extends HookConsumerWidget {
-  const PremiumBottomSheet({super.key});
+  const PremiumBottomSheet({required this.source, super.key});
 
-  static Future<void> show(BuildContext context) {
+  /// Where the sheet was opened from, reported with the paywall_view event.
+  final PaywallSource source;
+
+  static Future<void> show(
+    BuildContext context, {
+    required PaywallSource source,
+  }) {
     return showCupertinoSheet<void>(
       context: context,
-      builder: (_) => const PremiumBottomSheet(),
+      builder: (_) => PremiumBottomSheet(source: source),
     );
   }
 
@@ -37,7 +44,9 @@ class PremiumBottomSheet extends HookConsumerWidget {
 
     useEffect(
       () {
-        unawaited(ref.read(analyticsRepositoryProvider).logPaywallView());
+        unawaited(
+          ref.read(analyticsRepositoryProvider).logPaywallView(source: source),
+        );
         return null;
       },
       const [],

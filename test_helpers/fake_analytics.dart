@@ -1,10 +1,11 @@
 import 'package:life_battery/src/features/analytics/data/api/analytics_api_data_source.dart';
+import 'package:life_battery/src/features/purchases/domain/paywall_source.dart';
 import 'package:life_battery/src/features/purchases/domain/premium_plan.dart';
 
 class FakeAnalyticsApiDataSource implements AnalyticsApiDataSource {
   int onboardingStartCount = 0;
   int onboardingCompleteCount = 0;
-  int paywallViewCount = 0;
+  final List<PaywallSource> paywallViews = [];
   final List<PremiumPlan> purchaseStarts = [];
   final List<PremiumPlan> purchaseCompletes = [];
   final List<PremiumPlan> purchaseCancels = [];
@@ -24,8 +25,8 @@ class FakeAnalyticsApiDataSource implements AnalyticsApiDataSource {
   }
 
   @override
-  Future<void> logPaywallView() async {
-    paywallViewCount++;
+  Future<void> logPaywallView({required PaywallSource source}) async {
+    paywallViews.add(source);
   }
 
   @override
