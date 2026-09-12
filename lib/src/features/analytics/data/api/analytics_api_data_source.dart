@@ -8,4 +8,6 @@ abstract interface class AnalyticsApiDataSource {
   Future<void> logPurchaseComplete({required PremiumPlan plan});
 
   Future<void> logPurchaseCancel({required PremiumPlan plan});
+
+  Future<void> logPurchaseError({required PremiumPlan plan});
 }

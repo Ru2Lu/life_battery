@@ -36,4 +36,12 @@ class FirebaseAnalyticsApiDataSource implements AnalyticsApiDataSource {
       parameters: {'plan': plan.name},
     );
   }
+
+  @override
+  Future<void> logPurchaseError({required PremiumPlan plan}) {
+    return _analytics.logEvent(
+      name: 'purchase_error',
+      parameters: {'plan': plan.name},
+    );
+  }
 }

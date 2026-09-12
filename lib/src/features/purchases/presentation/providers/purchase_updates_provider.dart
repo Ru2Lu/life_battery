@@ -64,6 +64,12 @@ class PurchaseUpdates extends _$PurchaseUpdates {
         state = PremiumPurchaseStatus.pending;
       case PurchaseStatus.error:
         state = PremiumPurchaseStatus.error;
+        final plan = PremiumPlan.fromProductId(purchase.productID);
+        if (plan != null) {
+          unawaited(
+            ref.read(analyticsRepositoryProvider).logPurchaseError(plan: plan),
+          );
+        }
       case PurchaseStatus.canceled:
         state = PremiumPurchaseStatus.canceled;
         final plan = PremiumPlan.fromProductId(purchase.productID);

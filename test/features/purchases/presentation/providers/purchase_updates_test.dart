@@ -143,6 +143,21 @@ void main() {
     expect(fakeAnalytics.purchaseCancels, isEmpty);
   });
 
+  test('Logs purchase_error with the plan on an error event', () async {
+    await emit(
+      PurchaseStatus.error,
+      productID: PremiumPlan.monthly.productId,
+    );
+
+    expect(fakeAnalytics.purchaseErrors, [PremiumPlan.monthly]);
+  });
+
+  test('Does not log purchase_error for unrelated products', () async {
+    await emit(PurchaseStatus.error, productID: 'other_product');
+
+    expect(fakeAnalytics.purchaseErrors, isEmpty);
+  });
+
   test('Grants the entitlement and completes a purchase', () async {
     await emit(PurchaseStatus.purchased, pendingCompletePurchase: true);
 

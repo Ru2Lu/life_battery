@@ -55,4 +55,12 @@ void main() {
     expect(analytics.events.single.name, 'purchase_cancel');
     expect(analytics.events.single.parameters, {'plan': 'monthly'});
   });
+
+  test('Sends the purchase error as a purchase_error event with the plan',
+      () async {
+    await dataSource.logPurchaseError(plan: PremiumPlan.lifetime);
+
+    expect(analytics.events.single.name, 'purchase_error');
+    expect(analytics.events.single.parameters, {'plan': 'lifetime'});
+  });
 }
