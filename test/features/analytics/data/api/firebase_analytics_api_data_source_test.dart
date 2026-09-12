@@ -85,4 +85,11 @@ void main() {
     expect(analytics.events.single.name, 'subscription_renew');
     expect(analytics.events.single.parameters, isNull);
   });
+
+  test('Sends the review tap as a review_tap event', () async {
+    await dataSource.logReviewTap();
+
+    expect(analytics.events.single.name, 'review_tap');
+    expect(analytics.events.single.parameters, isNull);
+  });
 }

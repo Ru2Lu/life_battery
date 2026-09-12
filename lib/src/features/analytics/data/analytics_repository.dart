@@ -42,4 +42,8 @@ class AnalyticsRepository {
   Future<void> logSubscriptionRenew() {
     return _apiDataSource.logSubscriptionRenew();
   }
+
+  Future<void> logReviewTap() {
+    return _apiDataSource.logReviewTap();
+  }
 }

@@ -59,4 +59,9 @@ class FirebaseAnalyticsApiDataSource implements AnalyticsApiDataSource {
   Future<void> logSubscriptionRenew() {
     return _analytics.logEvent(name: 'subscription_renew');
   }
+
+  @override
+  Future<void> logReviewTap() {
+    return _analytics.logEvent(name: 'review_tap');
+  }
 }

@@ -16,4 +16,6 @@ abstract interface class AnalyticsApiDataSource {
   Future<void> logPurchaseError({required PremiumPlan plan});
 
   Future<void> logSubscriptionRenew();
+
+  Future<void> logReviewTap();
 }
