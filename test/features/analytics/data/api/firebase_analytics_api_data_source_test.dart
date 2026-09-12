@@ -39,4 +39,12 @@ void main() {
     expect(analytics.events.single.name, 'purchase_start');
     expect(analytics.events.single.parameters, {'plan': 'monthly'});
   });
+
+  test('Sends the purchase complete as a purchase_complete event with the plan',
+      () async {
+    await dataSource.logPurchaseComplete(plan: PremiumPlan.lifetime);
+
+    expect(analytics.events.single.name, 'purchase_complete');
+    expect(analytics.events.single.parameters, {'plan': 'lifetime'});
+  });
 }

@@ -4,4 +4,6 @@ abstract interface class AnalyticsApiDataSource {
   Future<void> logPaywallView();
 
   Future<void> logPurchaseStart({required PremiumPlan plan});
+
+  Future<void> logPurchaseComplete({required PremiumPlan plan});
 }

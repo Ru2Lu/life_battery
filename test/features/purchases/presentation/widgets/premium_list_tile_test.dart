@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:life_battery/src/features/analytics/data/analytics_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/data/entitlements_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/presentation/widgets/premium_list_tile.dart';
 
+import '../../../../../test_helpers/fake_analytics.dart';
 import '../../../../../test_helpers/fake_entitlements.dart';
 import '../../../../../test_helpers/fake_purchases.dart';
 import '../../../../../test_helpers/test_app.dart';
@@ -13,6 +15,7 @@ import '../../../../../test_helpers/test_app.dart';
 void main() {
   late FakePurchasesApiDataSource fakeApi;
   late FakeEntitlementsLocalDataSource fakeEntitlements;
+  late FakeAnalyticsApiDataSource fakeAnalytics;
 
   Widget buildTile() {
     return ProviderScope(
@@ -21,6 +24,7 @@ void main() {
         entitlementsLocalDataSourceProvider.overrideWithValue(
           fakeEntitlements,
         ),
+        analyticsApiDataSourceProvider.overrideWithValue(fakeAnalytics),
       ],
       child: const TestApp(
         home: Scaffold(body: PremiumListTile()),
@@ -31,6 +35,7 @@ void main() {
   setUp(() {
     fakeApi = FakePurchasesApiDataSource();
     fakeEntitlements = FakeEntitlementsLocalDataSource();
+    fakeAnalytics = FakeAnalyticsApiDataSource();
   });
 
   testWidgets('Displays label without the purchased state when not entitled', (

@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:life_battery/src/features/analytics/data/analytics_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/data/entitlements_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/domain/premium_plan.dart';
@@ -8,23 +9,27 @@ import 'package:life_battery/src/features/purchases/domain/premium_purchase_stat
 import 'package:life_battery/src/features/purchases/presentation/providers/is_premium_provider.dart';
 import 'package:life_battery/src/features/purchases/presentation/providers/purchase_updates_provider.dart';
 
+import '../../../../../test_helpers/fake_analytics.dart';
 import '../../../../../test_helpers/fake_entitlements.dart';
 import '../../../../../test_helpers/fake_purchases.dart';
 
 void main() {
   late FakePurchasesApiDataSource fakeApi;
   late FakeEntitlementsLocalDataSource fakeEntitlements;
+  late FakeAnalyticsApiDataSource fakeAnalytics;
   late ProviderContainer container;
 
   setUp(() {
     fakeApi = FakePurchasesApiDataSource();
     fakeEntitlements = FakeEntitlementsLocalDataSource();
+    fakeAnalytics = FakeAnalyticsApiDataSource();
     container = ProviderContainer(
       overrides: [
         purchasesApiDataSourceProvider.overrideWithValue(fakeApi),
         entitlementsLocalDataSourceProvider.overrideWithValue(
           fakeEntitlements,
         ),
+        analyticsApiDataSourceProvider.overrideWithValue(fakeAnalytics),
       ],
     );
     addTearDown(container.dispose);
@@ -100,6 +105,27 @@ void main() {
       container.read(purchaseUpdatesProvider),
       PremiumPurchaseStatus.canceled,
     );
+  });
+
+  test('Logs purchase_complete with the plan on a purchase event', () async {
+    await emit(
+      PurchaseStatus.purchased,
+      productID: PremiumPlan.monthly.productId,
+    );
+
+    expect(fakeAnalytics.purchaseCompletes, [PremiumPlan.monthly]);
+  });
+
+  test('Does not log purchase_complete on a restore event', () async {
+    await emit(PurchaseStatus.restored);
+
+    expect(fakeAnalytics.purchaseCompletes, isEmpty);
+  });
+
+  test('Does not log purchase_complete for unrelated products', () async {
+    await emit(PurchaseStatus.purchased, productID: 'other_product');
+
+    expect(fakeAnalytics.purchaseCompletes, isEmpty);
   });
 
   test('Grants the entitlement and completes a purchase', () async {

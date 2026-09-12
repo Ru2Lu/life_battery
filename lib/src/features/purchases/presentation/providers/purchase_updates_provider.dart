@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:life_battery/src/features/analytics/data/analytics_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/data/entitlements_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/domain/premium_plan.dart';
@@ -48,6 +51,14 @@ class PurchaseUpdates extends _$PurchaseUpdates {
           state = purchase.status == PurchaseStatus.purchased
               ? PremiumPurchaseStatus.purchased
               : PremiumPurchaseStatus.restored;
+          final plan = PremiumPlan.fromProductId(purchase.productID);
+          if (purchase.status == PurchaseStatus.purchased && plan != null) {
+            unawaited(
+              ref
+                  .read(analyticsRepositoryProvider)
+                  .logPurchaseComplete(plan: plan),
+            );
+          }
         }
       case PurchaseStatus.pending:
         state = PremiumPurchaseStatus.pending;
