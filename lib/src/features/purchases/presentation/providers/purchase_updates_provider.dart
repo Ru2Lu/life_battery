@@ -29,11 +29,21 @@ class PurchaseUpdates extends _$PurchaseUpdates {
     }
   }
 
+  /// The longest monthly billing cycle.
+  static const _billingCycleDays = 31;
+
+  /// A renewal transaction only reaches the app on its next launch, so
+  /// the expiry is stretched past the billing date to bridge the gap.
+  static const _bufferDays = 3;
+
+  static const _subscriptionValidity = Duration(
+    days: _billingCycleDays + _bufferDays,
+  );
+
   Future<void> _handlePurchase(PurchaseDetails purchase) async {
     switch (purchase.status) {
       case PurchaseStatus.purchased || PurchaseStatus.restored:
-        if (PremiumPlan.allProductIds.contains(purchase.productID)) {
-          await ref.read(entitlementsRepositoryProvider).markPremiumPurchased();
+        if (await _grantEntitlement(purchase)) {
           ref.invalidate(isPremiumProvider);
           state = purchase.status == PurchaseStatus.purchased
               ? PremiumPurchaseStatus.purchased
@@ -51,6 +61,27 @@ class PurchaseUpdates extends _$PurchaseUpdates {
     // avoid transactions getting stuck in the store queue.
     if (purchase.pendingCompletePurchase) {
       await ref.read(purchasesRepositoryProvider).completePurchase(purchase);
+    }
+  }
+
+  /// Returns true when [purchase] granted the premium entitlement.
+  Future<bool> _grantEntitlement(PurchaseDetails purchase) async {
+    final repository = ref.read(entitlementsRepositoryProvider);
+    switch (PremiumPlan.fromProductId(purchase.productID)) {
+      case PremiumPlan.lifetime:
+        await repository.markPremiumPurchased();
+        return true;
+      case PremiumPlan.monthly:
+        final transactionMillis = int.tryParse(purchase.transactionDate ?? '');
+        final purchasedAt = transactionMillis == null
+            ? DateTime.now()
+            : DateTime.fromMillisecondsSinceEpoch(transactionMillis);
+        await repository.markPremiumSubscribed(
+          expiresAt: purchasedAt.add(_subscriptionValidity),
+        );
+        return true;
+      case null:
+        return false;
     }
   }
 }

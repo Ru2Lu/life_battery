@@ -17,4 +17,12 @@ enum PremiumPlan {
 
   static Set<String> get allProductIds =>
       values.map((plan) => plan.productId).toSet();
+
+  /// The plan sold under [productId], or null for unrelated products.
+  static PremiumPlan? fromProductId(String productId) {
+    for (final plan in values) {
+      if (plan.productId == productId) return plan;
+    }
+    return null;
+  }
 }

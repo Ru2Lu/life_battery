@@ -73,6 +73,7 @@ PurchaseDetails buildPurchaseDetails({
   required PurchaseStatus status,
   String? productID,
   bool pendingCompletePurchase = false,
+  String? transactionDate,
 }) {
   return PurchaseDetails(
     productID: productID ?? PremiumPlan.lifetime.productId,
@@ -81,7 +82,7 @@ PurchaseDetails buildPurchaseDetails({
       serverVerificationData: 'server',
       source: 'test',
     ),
-    transactionDate: null,
+    transactionDate: transactionDate,
     status: status,
   )..pendingCompletePurchase = pendingCompletePurchase;
 }

@@ -26,6 +26,8 @@ class CacheDataDeletionLocalDataSource implements DataDeletionLocalDataSource {
   static const _columnHasLongPressedBattery = 'hasLongPressedBattery';
   static const _columnIsPercentageMode = 'isPercentageMode';
   static const _columnHasPremiumLifetime = 'hasPremiumLifetime';
+  static const _columnPremiumSubscriptionExpiresAt =
+      'premiumSubscriptionExpiresAt';
 
   @override
   Future<bool> getIsDeletedUser() async {
@@ -62,6 +64,7 @@ class CacheDataDeletionLocalDataSource implements DataDeletionLocalDataSource {
         _columnHasLongPressedBattery: 0,
         _columnIsPercentageMode: 1,
         _columnHasPremiumLifetime: 0,
+        _columnPremiumSubscriptionExpiresAt: null,
       });
       _setUserDeleted(true);
     } on DatabaseException catch (_) {}

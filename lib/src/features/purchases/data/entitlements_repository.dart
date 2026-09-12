@@ -13,12 +13,18 @@ class EntitlementsRepository {
 
   /// Decides whether the user is entitled to the premium features
   /// (ad removal and the home screen widget).
-  Future<bool> isPremium() {
-    return _localDataSource.getIsPremium();
+  Future<bool> isPremium() async {
+    final entitlement = await _localDataSource.getEntitlement();
+    return entitlement.isActive(DateTime.now());
   }
 
   Future<void> markPremiumPurchased() {
-    return _localDataSource.markIsPremium();
+    return _localDataSource.markLifetimePurchased();
+  }
+
+  /// Stores a subscription entitlement valid until [expiresAt].
+  Future<void> markPremiumSubscribed({required DateTime expiresAt}) {
+    return _localDataSource.markSubscribedUntil(expiresAt);
   }
 
   /// Pushes the premium entitlement to the home screen widget so it can

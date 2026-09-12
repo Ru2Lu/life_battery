@@ -35,12 +35,14 @@ void main() {
     PurchaseStatus status, {
     String? productID,
     bool pendingCompletePurchase = false,
+    String? transactionDate,
   }) async {
     fakeApi.controller.add([
       buildPurchaseDetails(
         status: status,
         productID: productID,
         pendingCompletePurchase: pendingCompletePurchase,
+        transactionDate: transactionDate,
       ),
     ]);
     await Future<void>.delayed(Duration.zero);
@@ -139,17 +141,33 @@ void main() {
     expect(fakeApi.completedPurchases, hasLength(1));
   });
 
-  test('Grants the entitlement on a monthly purchase', () async {
+  test('Grants a time-limited entitlement on a monthly purchase', () async {
     await emit(
       PurchaseStatus.purchased,
       productID: PremiumPlan.monthly.productId,
     );
 
-    expect(fakeEntitlements.isPremium, isTrue);
+    final entitlement = fakeEntitlements.entitlement;
+    expect(entitlement.hasLifetime, isFalse);
+    expect(entitlement.subscriptionExpiresAt, isNotNull);
+    expect(entitlement.isActive(DateTime.now()), isTrue);
     expect(
       container.read(purchaseUpdatesProvider),
       PremiumPurchaseStatus.purchased,
     );
+  });
+
+  test('An expired monthly restore does not grant premium', () async {
+    final oldTransaction = DateTime.now().subtract(const Duration(days: 90));
+
+    await emit(
+      PurchaseStatus.restored,
+      productID: PremiumPlan.monthly.productId,
+      transactionDate: oldTransaction.millisecondsSinceEpoch.toString(),
+    );
+
+    expect(fakeEntitlements.entitlement.subscriptionExpiresAt, isNotNull);
+    expect(await container.read(isPremiumProvider.future), isFalse);
   });
 
   test('Refreshes isPremium after a purchase', () async {

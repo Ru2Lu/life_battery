@@ -26,6 +26,10 @@ class LocalDatabase {
   // the v9 migration and the v10 rename.
   static const _columnHasPremium = 'hasPremium';
   static const _columnHasPremiumLifetime = 'hasPremiumLifetime';
+  // Locally estimated expiry of the premium subscription in milliseconds
+  // since epoch; NULL when the user never subscribed.
+  static const _columnPremiumSubscriptionExpiresAt =
+      'premiumSubscriptionExpiresAt';
 
   Database? _database;
 
@@ -59,7 +63,8 @@ class LocalDatabase {
             $_columnHasLongPressedBattery INTEGER NOT NULL,
             $_columnIsPercentageMode INTEGER NOT NULL,
             $_columnHasRemovedAds INTEGER NOT NULL,
-            $_columnHasPremiumLifetime INTEGER NOT NULL
+            $_columnHasPremiumLifetime INTEGER NOT NULL,
+            $_columnPremiumSubscriptionExpiresAt INTEGER
           )
         ''');
 
@@ -130,6 +135,10 @@ class LocalDatabase {
               'ALTER TABLE $_tableName '
               'RENAME COLUMN $_columnHasPremium '
               'TO $_columnHasPremiumLifetime',
+            );
+            await db.execute(
+              'ALTER TABLE $_tableName '
+              'ADD COLUMN $_columnPremiumSubscriptionExpiresAt INTEGER',
             );
           }
         },

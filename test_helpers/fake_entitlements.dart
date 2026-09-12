@@ -1,17 +1,36 @@
 import 'package:life_battery/src/features/purchases/data/home_widget/entitlements_home_widget_data_source.dart';
 import 'package:life_battery/src/features/purchases/data/local/entitlements_local_data_source.dart';
+import 'package:life_battery/src/features/purchases/domain/premium_entitlement.dart';
 
 class FakeEntitlementsLocalDataSource implements EntitlementsLocalDataSource {
-  FakeEntitlementsLocalDataSource({this.isPremium = false});
+  FakeEntitlementsLocalDataSource({bool isPremium = false})
+    : entitlement = PremiumEntitlement(hasLifetime: isPremium);
 
-  bool isPremium;
+  PremiumEntitlement entitlement;
+
+  bool get isPremium => entitlement.hasLifetime;
+
+  set isPremium(bool value) {
+    entitlement = PremiumEntitlement(hasLifetime: value);
+  }
 
   @override
-  Future<bool> getIsPremium() async => isPremium;
+  Future<PremiumEntitlement> getEntitlement() async => entitlement;
 
   @override
-  Future<void> markIsPremium() async {
-    isPremium = true;
+  Future<void> markLifetimePurchased() async {
+    entitlement = PremiumEntitlement(
+      hasLifetime: true,
+      subscriptionExpiresAt: entitlement.subscriptionExpiresAt,
+    );
+  }
+
+  @override
+  Future<void> markSubscribedUntil(DateTime expiresAt) async {
+    entitlement = PremiumEntitlement(
+      hasLifetime: entitlement.hasLifetime,
+      subscriptionExpiresAt: expiresAt,
+    );
   }
 }
 
