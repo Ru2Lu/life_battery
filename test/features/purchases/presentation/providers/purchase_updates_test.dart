@@ -170,6 +170,28 @@ void main() {
     expect(await container.read(isPremiumProvider.future), isFalse);
   });
 
+  test('An older monthly restore does not rewind the expiry', () async {
+    await emit(
+      PurchaseStatus.purchased,
+      productID: PremiumPlan.monthly.productId,
+    );
+    final expiryAfterPurchase =
+        fakeEntitlements.entitlement.subscriptionExpiresAt;
+
+    final oldTransaction = DateTime.now().subtract(const Duration(days: 90));
+    await emit(
+      PurchaseStatus.restored,
+      productID: PremiumPlan.monthly.productId,
+      transactionDate: oldTransaction.millisecondsSinceEpoch.toString(),
+    );
+
+    expect(
+      fakeEntitlements.entitlement.subscriptionExpiresAt,
+      expiryAfterPurchase,
+    );
+    expect(await container.read(isPremiumProvider.future), isTrue);
+  });
+
   test('Refreshes isPremium after a purchase', () async {
     expect(await container.read(isPremiumProvider.future), isFalse);
 

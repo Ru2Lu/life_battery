@@ -23,7 +23,16 @@ class EntitlementsRepository {
   }
 
   /// Stores a subscription entitlement valid until [expiresAt].
-  Future<void> markPremiumSubscribed({required DateTime expiresAt}) {
+  Future<void> markPremiumSubscribed({required DateTime expiresAt}) async {
+    // Never shorten a known expiry: a restore redelivers the whole
+    // transaction history, and an old renewal must not rewind the expiry
+    // written by a newer one.
+    final entitlement = await _localDataSource.getEntitlement();
+    final currentExpiresAt = entitlement.subscriptionExpiresAt;
+    if (currentExpiresAt != null && !expiresAt.isAfter(currentExpiresAt)) {
+      return;
+    }
+
     return _localDataSource.markSubscribedUntil(expiresAt);
   }
 
