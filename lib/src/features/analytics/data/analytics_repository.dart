@@ -11,6 +11,10 @@ class AnalyticsRepository {
 
   final AnalyticsApiDataSource _apiDataSource;
 
+  Future<void> logOnboardingStart() {
+    return _apiDataSource.logOnboardingStart();
+  }
+
   Future<void> logOnboardingComplete() {
     return _apiDataSource.logOnboardingComplete();
   }

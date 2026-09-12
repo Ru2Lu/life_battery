@@ -133,6 +133,9 @@ class LifeProgressContent extends HookConsumerWidget {
       Timer? timer;
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         if (isInitialUser) {
+          unawaited(
+            ref.read(analyticsRepositoryProvider).logOnboardingStart(),
+          );
           final birthDateBefore = lifespanRange.birthDate;
           await showDateInputBottomSheet();
           final birthDateAfter = ref

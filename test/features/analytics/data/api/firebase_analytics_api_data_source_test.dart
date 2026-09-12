@@ -25,6 +25,13 @@ void main() {
     dataSource = FirebaseAnalyticsApiDataSource(analytics: analytics);
   });
 
+  test('Sends the onboarding start as an onboarding_start event', () async {
+    await dataSource.logOnboardingStart();
+
+    expect(analytics.events.single.name, 'onboarding_start');
+    expect(analytics.events.single.parameters, isNull);
+  });
+
   test('Sends the onboarding completion as an onboarding_complete event',
       () async {
     await dataSource.logOnboardingComplete();

@@ -63,6 +63,17 @@ void main() {
       expect(find.byType(DateInputBottomSheet), findsOneWidget);
     });
 
+    testWidgets('Logs onboarding_start when the sheet is shown', (
+      tester,
+    ) async {
+      tester.platformDispatcher.localesTestValue = [const Locale('en')];
+
+      await tester.pumpWidget(buildFirstLaunchPage());
+      await tester.pumpUntilFound(find.byType(DateInputBottomSheet));
+
+      expect(fakeAnalytics.onboardingStartCount, 1);
+    });
+
     testWidgets(
       'Logs onboarding_complete when the sheet closes after a '
       'birth date change',
