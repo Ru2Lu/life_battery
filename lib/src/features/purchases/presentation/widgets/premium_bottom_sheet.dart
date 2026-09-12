@@ -162,6 +162,9 @@ class PremiumBottomSheet extends HookConsumerWidget {
                               .read(analyticsRepositoryProvider)
                               .logPurchaseStart(plan: selectedPlan.value),
                         );
+                        ref
+                            .read(purchaseUpdatesProvider.notifier)
+                            .markPurchaseStarted();
                         purchaseError.value = null;
                         isPurchasing.value = true;
                         try {

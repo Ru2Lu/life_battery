@@ -107,7 +107,9 @@ void main() {
     );
   });
 
-  test('Logs purchase_complete with the plan on a purchase event', () async {
+  test('Logs purchase_complete with the plan on a started purchase', () async {
+    container.read(purchaseUpdatesProvider.notifier).markPurchaseStarted();
+
     await emit(
       PurchaseStatus.purchased,
       productID: PremiumPlan.monthly.productId,
@@ -116,13 +118,44 @@ void main() {
     expect(fakeAnalytics.purchaseCompletes, [PremiumPlan.monthly]);
   });
 
+  test('Does not log purchase_complete without a started purchase', () async {
+    await emit(
+      PurchaseStatus.purchased,
+      productID: PremiumPlan.monthly.productId,
+    );
+
+    expect(fakeAnalytics.purchaseCompletes, isEmpty);
+  });
+
+  test('Logs purchase_complete only once for one started purchase', () async {
+    container.read(purchaseUpdatesProvider.notifier).markPurchaseStarted();
+
+    await emit(PurchaseStatus.purchased);
+    await emit(PurchaseStatus.purchased);
+
+    expect(fakeAnalytics.purchaseCompletes, hasLength(1));
+  });
+
+  test('Does not log purchase_complete after a canceled purchase', () async {
+    container.read(purchaseUpdatesProvider.notifier).markPurchaseStarted();
+
+    await emit(PurchaseStatus.canceled);
+    await emit(PurchaseStatus.purchased);
+
+    expect(fakeAnalytics.purchaseCompletes, isEmpty);
+  });
+
   test('Does not log purchase_complete on a restore event', () async {
+    container.read(purchaseUpdatesProvider.notifier).markPurchaseStarted();
+
     await emit(PurchaseStatus.restored);
 
     expect(fakeAnalytics.purchaseCompletes, isEmpty);
   });
 
   test('Does not log purchase_complete for unrelated products', () async {
+    container.read(purchaseUpdatesProvider.notifier).markPurchaseStarted();
+
     await emit(PurchaseStatus.purchased, productID: 'other_product');
 
     expect(fakeAnalytics.purchaseCompletes, isEmpty);

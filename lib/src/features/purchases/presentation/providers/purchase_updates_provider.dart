@@ -32,6 +32,14 @@ class PurchaseUpdates extends _$PurchaseUpdates {
     }
   }
 
+  /// Subscription renewals arrive as purchased events at startup without
+  /// a user action, so purchase_complete is only logged for purchased
+  /// events preceded by [markPurchaseStarted]. Cleared once the started
+  /// purchase reaches any final status.
+  bool _hasPurchaseStarted = false;
+
+  void markPurchaseStarted() => _hasPurchaseStarted = true;
+
   /// The longest monthly billing cycle.
   static const _billingCycleDays = 31;
 
@@ -51,8 +59,14 @@ class PurchaseUpdates extends _$PurchaseUpdates {
           state = purchase.status == PurchaseStatus.purchased
               ? PremiumPurchaseStatus.purchased
               : PremiumPurchaseStatus.restored;
+          if (purchase.status == PurchaseStatus.restored) {
+            _hasPurchaseStarted = false;
+          }
           final plan = PremiumPlan.fromProductId(purchase.productID);
-          if (purchase.status == PurchaseStatus.purchased && plan != null) {
+          if (purchase.status == PurchaseStatus.purchased &&
+              plan != null &&
+              _hasPurchaseStarted) {
+            _hasPurchaseStarted = false;
             unawaited(
               ref
                   .read(analyticsRepositoryProvider)
@@ -66,6 +80,7 @@ class PurchaseUpdates extends _$PurchaseUpdates {
         state = PremiumPurchaseStatus.error;
         final plan = PremiumPlan.fromProductId(purchase.productID);
         if (plan != null) {
+          _hasPurchaseStarted = false;
           unawaited(
             ref.read(analyticsRepositoryProvider).logPurchaseError(plan: plan),
           );
@@ -74,6 +89,7 @@ class PurchaseUpdates extends _$PurchaseUpdates {
         state = PremiumPurchaseStatus.canceled;
         final plan = PremiumPlan.fromProductId(purchase.productID);
         if (plan != null) {
+          _hasPurchaseStarted = false;
           unawaited(
             ref.read(analyticsRepositoryProvider).logPurchaseCancel(plan: plan),
           );

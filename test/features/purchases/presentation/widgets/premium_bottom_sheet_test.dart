@@ -224,6 +224,40 @@ void main() {
     );
   });
 
+  testWidgets('Logs purchase_complete after purchasing from the sheet', (
+    tester,
+  ) async {
+    await openSheet(tester);
+
+    await tester.tap(find.text('Purchase'));
+    await tester.pumpAndSettle();
+    fakeApi.controller.add([
+      buildPurchaseDetails(
+        status: PurchaseStatus.purchased,
+        pendingCompletePurchase: true,
+      ),
+    ]);
+    await tester.pumpAndSettle();
+
+    expect(fakeAnalytics.purchaseCompletes, [PremiumPlan.lifetime]);
+  });
+
+  testWidgets('Does not log purchase_complete without a started purchase', (
+    tester,
+  ) async {
+    await openSheet(tester);
+
+    fakeApi.controller.add([
+      buildPurchaseDetails(
+        status: PurchaseStatus.purchased,
+        pendingCompletePurchase: true,
+      ),
+    ]);
+    await tester.pumpAndSettle();
+
+    expect(fakeAnalytics.purchaseCompletes, isEmpty);
+  });
+
   testWidgets('Closes the bottom sheet on a purchase event', (tester) async {
     await openSheet(tester);
 
