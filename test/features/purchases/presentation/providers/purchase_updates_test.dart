@@ -128,6 +128,21 @@ void main() {
     expect(fakeAnalytics.purchaseCompletes, isEmpty);
   });
 
+  test('Logs purchase_cancel with the plan on a cancel event', () async {
+    await emit(
+      PurchaseStatus.canceled,
+      productID: PremiumPlan.lifetime.productId,
+    );
+
+    expect(fakeAnalytics.purchaseCancels, [PremiumPlan.lifetime]);
+  });
+
+  test('Does not log purchase_cancel for unrelated products', () async {
+    await emit(PurchaseStatus.canceled, productID: 'other_product');
+
+    expect(fakeAnalytics.purchaseCancels, isEmpty);
+  });
+
   test('Grants the entitlement and completes a purchase', () async {
     await emit(PurchaseStatus.purchased, pendingCompletePurchase: true);
 

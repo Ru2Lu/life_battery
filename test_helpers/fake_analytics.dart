@@ -12,6 +12,9 @@ class FakeAnalyticsApiDataSource implements AnalyticsApiDataSource {
   /// The plans passed to [logPurchaseComplete], in call order.
   final List<PremiumPlan> purchaseCompletes = [];
 
+  /// The plans passed to [logPurchaseCancel], in call order.
+  final List<PremiumPlan> purchaseCancels = [];
+
   @override
   Future<void> logPaywallView() async {
     paywallViewCount++;
@@ -25,5 +28,10 @@ class FakeAnalyticsApiDataSource implements AnalyticsApiDataSource {
   @override
   Future<void> logPurchaseComplete({required PremiumPlan plan}) async {
     purchaseCompletes.add(plan);
+  }
+
+  @override
+  Future<void> logPurchaseCancel({required PremiumPlan plan}) async {
+    purchaseCancels.add(plan);
   }
 }

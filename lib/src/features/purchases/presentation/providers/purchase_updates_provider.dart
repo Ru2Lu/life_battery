@@ -66,6 +66,12 @@ class PurchaseUpdates extends _$PurchaseUpdates {
         state = PremiumPurchaseStatus.error;
       case PurchaseStatus.canceled:
         state = PremiumPurchaseStatus.canceled;
+        final plan = PremiumPlan.fromProductId(purchase.productID);
+        if (plan != null) {
+          unawaited(
+            ref.read(analyticsRepositoryProvider).logPurchaseCancel(plan: plan),
+          );
+        }
     }
 
     // Required for every finished transaction regardless of status to

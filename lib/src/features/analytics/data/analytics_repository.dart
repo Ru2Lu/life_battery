@@ -22,4 +22,8 @@ class AnalyticsRepository {
   Future<void> logPurchaseComplete({required PremiumPlan plan}) {
     return _apiDataSource.logPurchaseComplete(plan: plan);
   }
+
+  Future<void> logPurchaseCancel({required PremiumPlan plan}) {
+    return _apiDataSource.logPurchaseCancel(plan: plan);
+  }
 }

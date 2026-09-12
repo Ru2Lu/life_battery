@@ -28,4 +28,12 @@ class FirebaseAnalyticsApiDataSource implements AnalyticsApiDataSource {
       parameters: {'plan': plan.name},
     );
   }
+
+  @override
+  Future<void> logPurchaseCancel({required PremiumPlan plan}) {
+    return _analytics.logEvent(
+      name: 'purchase_cancel',
+      parameters: {'plan': plan.name},
+    );
+  }
 }
