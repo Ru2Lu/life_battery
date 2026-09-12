@@ -1,5 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:life_battery/src/features/analytics/data/api/analytics_api_data_source.dart';
+import 'package:life_battery/src/features/purchases/domain/premium_plan.dart';
 
 class FirebaseAnalyticsApiDataSource implements AnalyticsApiDataSource {
   FirebaseAnalyticsApiDataSource({required FirebaseAnalytics analytics})
@@ -10,5 +11,13 @@ class FirebaseAnalyticsApiDataSource implements AnalyticsApiDataSource {
   @override
   Future<void> logPaywallView() {
     return _analytics.logEvent(name: 'paywall_view');
+  }
+
+  @override
+  Future<void> logPurchaseStart({required PremiumPlan plan}) {
+    return _analytics.logEvent(
+      name: 'purchase_start',
+      parameters: {'plan': plan.name},
+    );
   }
 }

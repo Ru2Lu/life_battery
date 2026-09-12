@@ -5,6 +5,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:life_battery/src/features/analytics/data/analytics_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/data/entitlements_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
+import 'package:life_battery/src/features/purchases/domain/premium_plan.dart';
 import 'package:life_battery/src/features/purchases/presentation/widgets/premium_list_tile.dart';
 
 import '../../../../../test_helpers/fake_analytics.dart';
@@ -248,6 +249,27 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(fakeAnalytics.paywallViewCount, 1);
+  });
+
+  testWidgets('Logs the purchase start with the selected plan', (
+    tester,
+  ) async {
+    await openSheet(tester);
+
+    await tester.tap(find.text('Purchase'));
+    await tester.pumpAndSettle();
+
+    expect(fakeAnalytics.purchaseStarts, [PremiumPlan.lifetime]);
+
+    await tester.tap(find.text('Monthly'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Purchase'));
+    await tester.pumpAndSettle();
+
+    expect(fakeAnalytics.purchaseStarts, [
+      PremiumPlan.lifetime,
+      PremiumPlan.monthly,
+    ]);
   });
 
   testWidgets('Shows the Japanese bottom sheet when tapped', (tester) async {

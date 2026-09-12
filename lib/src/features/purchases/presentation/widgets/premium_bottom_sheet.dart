@@ -157,6 +157,11 @@ class PremiumBottomSheet extends HookConsumerWidget {
                 onPressed: offer == null || isPremium || isPurchasing.value
                     ? null
                     : () async {
+                        unawaited(
+                          ref
+                              .read(analyticsRepositoryProvider)
+                              .logPurchaseStart(plan: selectedPlan.value),
+                        );
                         purchaseError.value = null;
                         isPurchasing.value = true;
                         try {

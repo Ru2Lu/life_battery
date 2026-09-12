@@ -1,9 +1,10 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:life_battery/src/features/analytics/data/api/firebase_analytics_api_data_source.dart';
+import 'package:life_battery/src/features/purchases/domain/premium_plan.dart';
 
 class _RecordingFirebaseAnalytics extends Fake implements FirebaseAnalytics {
-  final List<String> eventNames = [];
+  final List<({String name, Map<String, Object>? parameters})> events = [];
 
   @override
   Future<void> logEvent({
@@ -11,17 +12,31 @@ class _RecordingFirebaseAnalytics extends Fake implements FirebaseAnalytics {
     Map<String, Object>? parameters,
     AnalyticsCallOptions? callOptions,
   }) async {
-    eventNames.add(name);
+    events.add((name: name, parameters: parameters));
   }
 }
 
 void main() {
-  test('Sends the paywall view as a paywall_view event', () async {
-    final analytics = _RecordingFirebaseAnalytics();
-    final dataSource = FirebaseAnalyticsApiDataSource(analytics: analytics);
+  late _RecordingFirebaseAnalytics analytics;
+  late FirebaseAnalyticsApiDataSource dataSource;
 
+  setUp(() {
+    analytics = _RecordingFirebaseAnalytics();
+    dataSource = FirebaseAnalyticsApiDataSource(analytics: analytics);
+  });
+
+  test('Sends the paywall view as a paywall_view event', () async {
     await dataSource.logPaywallView();
 
-    expect(analytics.eventNames, ['paywall_view']);
+    expect(analytics.events.single.name, 'paywall_view');
+    expect(analytics.events.single.parameters, isNull);
+  });
+
+  test('Sends the purchase start as a purchase_start event with the plan',
+      () async {
+    await dataSource.logPurchaseStart(plan: PremiumPlan.monthly);
+
+    expect(analytics.events.single.name, 'purchase_start');
+    expect(analytics.events.single.parameters, {'plan': 'monthly'});
   });
 }
