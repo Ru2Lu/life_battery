@@ -1,3 +1,5 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
 import 'package:life_battery/src/features/data_deletion/data/data_deletion_repository_provider.dart';
 import 'package:life_battery/src/features/data_deletion/presentation/pages/user_deleted_page.dart';
@@ -13,6 +15,12 @@ part 'app_router.g.dart';
 GoRouter goRouter(Ref ref) {
   final dataDeletionRepository = ref.watch(dataDeletionRepositoryProvider);
   return GoRouter(
+    observers: [
+      // Integration tests build the app without Firebase.initializeApp, so
+      // only attach the observer when a Firebase app exists.
+      if (Firebase.apps.isNotEmpty)
+        FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
+    ],
     redirect: (context, state) {
       final isDeleted = dataDeletionRepository.isUserDeleted;
       if (isDeleted) {
