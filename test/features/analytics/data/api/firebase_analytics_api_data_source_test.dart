@@ -63,4 +63,11 @@ void main() {
     expect(analytics.events.single.name, 'purchase_error');
     expect(analytics.events.single.parameters, {'plan': 'lifetime'});
   });
+
+  test('Sends the subscription renew as a subscription_renew event', () async {
+    await dataSource.logSubscriptionRenew();
+
+    expect(analytics.events.single.name, 'subscription_renew');
+    expect(analytics.events.single.parameters, isNull);
+  });
 }

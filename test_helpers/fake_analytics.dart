@@ -7,6 +7,7 @@ class FakeAnalyticsApiDataSource implements AnalyticsApiDataSource {
   final List<PremiumPlan> purchaseCompletes = [];
   final List<PremiumPlan> purchaseCancels = [];
   final List<PremiumPlan> purchaseErrors = [];
+  int subscriptionRenewCount = 0;
 
   @override
   Future<void> logPaywallView() async {
@@ -31,5 +32,10 @@ class FakeAnalyticsApiDataSource implements AnalyticsApiDataSource {
   @override
   Future<void> logPurchaseError({required PremiumPlan plan}) async {
     purchaseErrors.add(plan);
+  }
+
+  @override
+  Future<void> logSubscriptionRenew() async {
+    subscriptionRenewCount++;
   }
 }

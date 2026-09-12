@@ -44,4 +44,9 @@ class FirebaseAnalyticsApiDataSource implements AnalyticsApiDataSource {
       parameters: {'plan': plan.name},
     );
   }
+
+  @override
+  Future<void> logSubscriptionRenew() {
+    return _analytics.logEvent(name: 'subscription_renew');
+  }
 }

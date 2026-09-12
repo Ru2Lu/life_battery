@@ -63,15 +63,19 @@ class PurchaseUpdates extends _$PurchaseUpdates {
             _hasPurchaseStarted = false;
           }
           final plan = PremiumPlan.fromProductId(purchase.productID);
-          if (purchase.status == PurchaseStatus.purchased &&
-              plan != null &&
-              _hasPurchaseStarted) {
-            _hasPurchaseStarted = false;
-            unawaited(
-              ref
-                  .read(analyticsRepositoryProvider)
-                  .logPurchaseComplete(plan: plan),
-            );
+          if (purchase.status == PurchaseStatus.purchased && plan != null) {
+            if (_hasPurchaseStarted) {
+              _hasPurchaseStarted = false;
+              unawaited(
+                ref
+                    .read(analyticsRepositoryProvider)
+                    .logPurchaseComplete(plan: plan),
+              );
+            } else if (plan == PremiumPlan.monthly) {
+              unawaited(
+                ref.read(analyticsRepositoryProvider).logSubscriptionRenew(),
+              );
+            }
           }
         }
       case PurchaseStatus.pending:

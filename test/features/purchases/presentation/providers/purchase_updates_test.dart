@@ -161,6 +161,37 @@ void main() {
     expect(fakeAnalytics.purchaseCompletes, isEmpty);
   });
 
+  test('Logs subscription_renew for a monthly purchase without a start',
+      () async {
+    await emit(
+      PurchaseStatus.purchased,
+      productID: PremiumPlan.monthly.productId,
+    );
+
+    expect(fakeAnalytics.subscriptionRenewCount, 1);
+    expect(fakeAnalytics.purchaseCompletes, isEmpty);
+  });
+
+  test('Does not log subscription_renew on a started purchase', () async {
+    container.read(purchaseUpdatesProvider.notifier).markPurchaseStarted();
+
+    await emit(
+      PurchaseStatus.purchased,
+      productID: PremiumPlan.monthly.productId,
+    );
+
+    expect(fakeAnalytics.subscriptionRenewCount, 0);
+  });
+
+  test('Does not log subscription_renew for a lifetime purchase', () async {
+    await emit(
+      PurchaseStatus.purchased,
+      productID: PremiumPlan.lifetime.productId,
+    );
+
+    expect(fakeAnalytics.subscriptionRenewCount, 0);
+  });
+
   test('Logs purchase_cancel with the plan on a cancel event', () async {
     await emit(
       PurchaseStatus.canceled,

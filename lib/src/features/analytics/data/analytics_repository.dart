@@ -30,4 +30,8 @@ class AnalyticsRepository {
   Future<void> logPurchaseError({required PremiumPlan plan}) {
     return _apiDataSource.logPurchaseError(plan: plan);
   }
+
+  Future<void> logSubscriptionRenew() {
+    return _apiDataSource.logSubscriptionRenew();
+  }
 }
