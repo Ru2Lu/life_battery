@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:life_battery/src/features/analytics/data/analytics_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/data/purchases_repository_provider.dart';
 import 'package:life_battery/src/features/purchases/domain/premium_plan.dart';
 import 'package:life_battery/src/features/purchases/domain/premium_products.dart';
@@ -31,6 +34,14 @@ class PremiumBottomSheet extends HookConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final purchaseError = useState<String?>(null);
     final isPurchasing = useState(false);
+
+    useEffect(
+      () {
+        unawaited(ref.read(analyticsRepositoryProvider).logPaywallView());
+        return null;
+      },
+      const [],
+    );
 
     // Closes the sheet once the entitlement is granted so the settings
     // page behind it shows the purchased state. A failed purchase surfaces
