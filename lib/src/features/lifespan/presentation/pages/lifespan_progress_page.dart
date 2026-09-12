@@ -7,11 +7,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:life_battery/src/common_widgets/async_value_widget.dart';
 import 'package:life_battery/src/extensions/extensions.dart';
 import 'package:life_battery/src/features/ads/presentation/widgets/banner_ad_widget.dart';
+import 'package:life_battery/src/features/analytics/data/analytics_repository_provider.dart';
 import 'package:life_battery/src/features/lifespan/domain/lifespan_range.dart';
 import 'package:life_battery/src/features/lifespan/presentation/providers/display_mode_manager_provider.dart';
 import 'package:life_battery/src/features/lifespan/presentation/providers/has_long_pressed_battery_provider.dart';
 import 'package:life_battery/src/features/lifespan/presentation/providers/is_initial_user_provider.dart';
 import 'package:life_battery/src/features/lifespan/presentation/providers/lifespan_progress_state_provider.dart';
+import 'package:life_battery/src/features/lifespan/presentation/providers/lifespan_range_manager_provider.dart';
 import 'package:life_battery/src/features/lifespan/presentation/widgets/battery_indicator.dart';
 import 'package:life_battery/src/features/lifespan/presentation/widgets/date_input_bottom_sheet.dart';
 import 'package:life_battery/src/features/lifespan/presentation/widgets/long_press_hint.dart';
@@ -131,7 +133,20 @@ class LifeProgressContent extends HookConsumerWidget {
       Timer? timer;
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         if (isInitialUser) {
+          final birthDateBefore = lifespanRange.birthDate;
           await showDateInputBottomSheet();
+          final birthDateAfter = ref
+              .read(lifespanRangeManagerProvider)
+              .value
+              ?.birthDate;
+          // Compares values, not picker interaction: a user whose real
+          // birth date equals the default is not counted, which is an
+          // acceptable loss for this metric.
+          if (birthDateAfter != null && birthDateAfter != birthDateBefore) {
+            unawaited(
+              ref.read(analyticsRepositoryProvider).logOnboardingComplete(),
+            );
+          }
           if (!context.mounted) return;
         }
         timer = Timer(

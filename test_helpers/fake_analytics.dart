@@ -2,12 +2,18 @@ import 'package:life_battery/src/features/analytics/data/api/analytics_api_data_
 import 'package:life_battery/src/features/purchases/domain/premium_plan.dart';
 
 class FakeAnalyticsApiDataSource implements AnalyticsApiDataSource {
+  int onboardingCompleteCount = 0;
   int paywallViewCount = 0;
   final List<PremiumPlan> purchaseStarts = [];
   final List<PremiumPlan> purchaseCompletes = [];
   final List<PremiumPlan> purchaseCancels = [];
   final List<PremiumPlan> purchaseErrors = [];
   int subscriptionRenewCount = 0;
+
+  @override
+  Future<void> logOnboardingComplete() async {
+    onboardingCompleteCount++;
+  }
 
   @override
   Future<void> logPaywallView() async {

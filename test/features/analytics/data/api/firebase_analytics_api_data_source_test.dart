@@ -25,6 +25,14 @@ void main() {
     dataSource = FirebaseAnalyticsApiDataSource(analytics: analytics);
   });
 
+  test('Sends the onboarding completion as an onboarding_complete event',
+      () async {
+    await dataSource.logOnboardingComplete();
+
+    expect(analytics.events.single.name, 'onboarding_complete');
+    expect(analytics.events.single.parameters, isNull);
+  });
+
   test('Sends the paywall view as a paywall_view event', () async {
     await dataSource.logPaywallView();
 

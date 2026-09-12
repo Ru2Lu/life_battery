@@ -9,6 +9,11 @@ class FirebaseAnalyticsApiDataSource implements AnalyticsApiDataSource {
   final FirebaseAnalytics _analytics;
 
   @override
+  Future<void> logOnboardingComplete() {
+    return _analytics.logEvent(name: 'onboarding_complete');
+  }
+
+  @override
   Future<void> logPaywallView() {
     return _analytics.logEvent(name: 'paywall_view');
   }
