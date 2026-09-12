@@ -49,6 +49,12 @@ void main() {
     expect(analytics.events.single.parameters, {'source': 'settings'});
   });
 
+  test('Sends the ad paywall source as ad', () async {
+    await dataSource.logPaywallView(source: PaywallSource.ad);
+
+    expect(analytics.events.single.parameters, {'source': 'ad'});
+  });
+
   test('Sends the purchase start as a purchase_start event with the plan',
       () async {
     await dataSource.logPurchaseStart(plan: PremiumPlan.monthly);
