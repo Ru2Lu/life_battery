@@ -1,4 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:life_battery/src/features/analytics/data/api/firebase_analytics_api_data_source.dart';
 import 'package:life_battery/src/features/purchases/domain/paywall_source.dart';
@@ -108,5 +109,20 @@ void main() {
 
     expect(analytics.events.single.name, 'review_tap');
     expect(analytics.events.single.parameters, isNull);
+  });
+
+  test('Prints events to the console in debug builds', () async {
+    final printed = <String>[];
+    final originalDebugPrint = debugPrint;
+    debugPrint = (message, {wrapWidth}) => printed.add(message ?? '');
+    addTearDown(() => debugPrint = originalDebugPrint);
+
+    await dataSource.logPaywallView(source: PaywallSource.settings);
+    await dataSource.logReviewTap();
+
+    expect(printed, [
+      '[analytics] paywall_view source=settings',
+      '[analytics] review_tap',
+    ]);
   });
 }
